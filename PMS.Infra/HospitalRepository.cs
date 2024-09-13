@@ -34,6 +34,11 @@ namespace PMS.Infra
             return hospitalsListByPincode;
 
         }
+        public async Task<Hospital> GetHospitalById(int id)
+        {
+            var hospitals = await _context.Hospitals.FirstOrDefaultAsync(s => s.HospitalId == id);
+            return hospitals;
+        }
 
 
     }
