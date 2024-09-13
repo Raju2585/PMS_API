@@ -55,7 +55,21 @@ namespace PMS.Api.Controllers
             }
             catch(Exception ex)
             {
-                return StatusCode(500);
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("get/{id}")]
+        public async Task<ActionResult<Hospital>> GetHospitalById(int id)
+        {
+            try
+            {
+                var hospitals = await _hospitalService.GetHospitalById(id);
+                return Ok(hospitals);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
             }
         }
 
