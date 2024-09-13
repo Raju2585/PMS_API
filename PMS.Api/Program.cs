@@ -31,6 +31,12 @@ builder.Services.AddScoped<IVitalSignService,VitalSignService>();
 builder.Services.AddScoped<IVitalSignRepository,VitalSignRepository>();
 builder.Services.AddScoped<IMedicalhistoryService,MedicalHistoryService>();
 builder.Services.AddScoped<IMedicalHistoryRepository,MedicalHistoryRepository>();
+builder.Services.AddScoped<IDoctorService, DoctorService>();
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<IHospitalService, HospitalService>();
+builder.Services.AddScoped<IHospitalRepository, HospitalRepository>();
+builder.Services.AddScoped<IAppointmentService,AppointmentService>();
+builder.Services.AddScoped<IAppointmentRepository,AppointmentRepository>();
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
