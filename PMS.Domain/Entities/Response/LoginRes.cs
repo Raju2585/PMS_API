@@ -9,7 +9,7 @@ namespace PMS.Domain.Entities.Response
 {
     public class LoginRes
     {
-        public PatientReq Patient { get; set; }
+        public PatientDtl Patient { get; set; }
         public bool IsLogged { get; set; } = false;
         public string Token { get; set; }
     }
