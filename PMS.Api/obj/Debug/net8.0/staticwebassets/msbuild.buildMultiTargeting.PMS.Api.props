@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\PMS.Api.props" />
+</Project>
