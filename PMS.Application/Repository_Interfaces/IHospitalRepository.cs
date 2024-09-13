@@ -14,5 +14,7 @@ namespace PMS.Application.Repository_Interfaces
         Task<List<Hospital>> GetHospitalByLocation(string location);
 
         Task<List<Hospital>> GetHospitalByPinCode(int pinCode);
+
+        Task<Hospital> GetHospitalById(int id);
     }
 }

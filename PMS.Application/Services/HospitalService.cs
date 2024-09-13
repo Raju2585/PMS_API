@@ -28,6 +28,9 @@ namespace PMS.Application.Services
         {
             return await _hospitalRepository.GetHospitalByPinCode(pinCode);
         }
-
+        public async Task<Hospital> GetHospitalById(int id)
+        {
+            return await _hospitalRepository.GetHospitalById(id);
+        }
     }
 }
