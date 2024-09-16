@@ -29,7 +29,7 @@ namespace PMS.Api.Controllers
         }
 
         [HttpGet]
-        [Route("Get/{id:int}")]
+        [Route("GetAppointment/{id:int}")]
         public async Task<IActionResult> GetAppointment(int appointmentId)
         {
             var appointment = await _appointmentService.GetAppointment(appointmentId);
@@ -59,7 +59,7 @@ namespace PMS.Api.Controllers
         }
 
         [HttpGet]
-        [Route("GetPatient/{patientId:int}")]
+        [Route("GetAppointmentByPatientId/{patientId:int}")]
         public async Task<IActionResult> GetAppointmentsByPatientId(int patientId)
         {
             var appointment = await _appointmentService.GetAppointmentsByPatientId(patientId);
@@ -67,7 +67,7 @@ namespace PMS.Api.Controllers
         }
 
         [HttpGet]
-        [Route("GetDoctor/{doctorId:int}")]
+        [Route("GetAppointmentByDoctorId/{doctorId:int}")]
         public async Task<IActionResult> GetAppointmentsByDoctorId(int doctorId)
         {
             var appointment = await _appointmentService.GetAppointmentsByDoctorId(doctorId);
