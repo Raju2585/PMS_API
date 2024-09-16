@@ -76,7 +76,11 @@ namespace PMS.Infra
                 .WithMany(p => p.MedicalHistories)
                 .HasForeignKey(m => m.PatientId)
                 .OnDelete(DeleteBehavior.Restrict);
-
+            modelBuilder.Entity<Receptionist>()
+               .HasOne(r => r.Hospital)
+               .WithOne(h => h.Receptionist)
+               .HasForeignKey<Receptionist>(r => r.HospitalId)
+               .OnDelete(DeleteBehavior.Cascade);
 
         }
         public async Task<int> SaveChangesAsync()

@@ -12,6 +12,7 @@ namespace PMS.Domain.Entities
         public byte[]? HospitalImage { get; set; }=null;
         // Navigation property
         public virtual ICollection<Doctor> Doctors { get; set; } = new List<Doctor>();
+        public virtual Receptionist Receptionist { get; set; }
     }
 
 }
