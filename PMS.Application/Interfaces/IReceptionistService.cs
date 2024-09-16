@@ -9,10 +9,9 @@ using System.Threading.Tasks;
 
 namespace PMS.Application.Interfaces
 {
-    public interface IPatientService
+    public interface IReceptionistService
     {
-        Task<List<PatientDtl>> GetAllPatientDtls();
-        Task<PatientRes> RegisterPatient(PatientReq patientReq);
-        Task<LoginRes<PatientDtl>> Login(LoginReq patient);
+        public Task<Receptionist> GetReceptionistByEmail(string email);
+        Task<LoginRes<Receptionist>> Login(LoginReq patient);
     }
 }

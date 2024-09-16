@@ -48,6 +48,7 @@ namespace PMS.Api.Controllers
 
             return Ok(PatientRes);
         }
+
         [AllowAnonymous]
         [HttpPost]
         [Route("Login")]
