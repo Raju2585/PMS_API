@@ -18,7 +18,7 @@ namespace PMS.Api.Controllers
 
         [HttpPost]
         [Route("schedule")]
-        public async Task<IActionResult> CreateAppointment([FromBody] AppointmentDto appointmentDto)
+        public async Task<IActionResult> ScheduleAppointment([FromBody] AppointmentDto appointmentDto)
         {
             if (appointmentDto == null)
             {
@@ -29,8 +29,8 @@ namespace PMS.Api.Controllers
         }
 
         [HttpGet]
-        [Route("Retrieve/{id:int}")]
-        public async Task<IActionResult> RetrieveAppointmentById(int appointmentId)
+        [Route("Get/{id:int}")]
+        public async Task<IActionResult> GetAppointment(int appointmentId)
         {
             var appointment = await _appointmentService.GetAppointment(appointmentId);
             if (appointment == null)
@@ -41,8 +41,8 @@ namespace PMS.Api.Controllers
         }
 
         [HttpPut]
-        [Route("Modify/{id:int}")]
-        public async Task<IActionResult> ModifyAppointment(int id, [FromBody] RequestAppointmentDto appointment)
+        [Route("Update/{id:int}")]
+        public async Task<IActionResult> UpdateAppointment(int id, [FromBody] AppointmentDto appointment)
         {
             if (id != appointment.AppointmentId)
             {
@@ -59,24 +59,24 @@ namespace PMS.Api.Controllers
         }
 
         [HttpGet]
-        [Route("patient/{patientId:int}")]
-        public async Task<IActionResult> RetrieveAppointmentsByPatientId(int patientId)
+        [Route("GetPatient/{patientId:int}")]
+        public async Task<IActionResult> GetAppointmentsByPatientId(int patientId)
         {
             var appointment = await _appointmentService.GetAppointmentsByPatientId(patientId);
             return Ok(appointment);
         }
 
         [HttpGet]
-        [Route("doctor/{doctorId:int}")]
-        public async Task<IActionResult> RetrieveAppointmentsByDoctorId(int doctorId)
+        [Route("GetDoctor/{doctorId:int}")]
+        public async Task<IActionResult> GetAppointmentsByDoctorId(int doctorId)
         {
             var appointment = await _appointmentService.GetAppointmentsByDoctorId(doctorId);
             return Ok(appointment);
         }
 
         [HttpPut]
-        [Route("update-status/{appointmentId:int}")]
-        public async Task<IActionResult> UpdateStatus(int appointmentId, [FromQuery] int status)
+        [Route("UpdateStatus/{appointmentId:int}")]
+        public async Task<IActionResult> UpdateAppointmentStatus(int appointmentId, [FromQuery] int status)
         {
             
             if (status != 0 && status != 1)
@@ -120,8 +120,8 @@ namespace PMS.Api.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-        [HttpGet("hospital/{hospitalName}")]
-        public async Task<IActionResult> RetrieveAppointmentsByHospital(string hospitalName)
+        [HttpGet("GetHospitalName/{hospitalName}")]
+        public async Task<IActionResult> GetAppointmentsByHospital(string hospitalName)
         {
             if (string.IsNullOrWhiteSpace(hospitalName))
             {

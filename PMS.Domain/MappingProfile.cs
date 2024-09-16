@@ -26,9 +26,7 @@ namespace PMS.Domain
 
             CreateMap<Appointment,AppointmentDto>();
             CreateMap<AppointmentDto,Appointment>();
-            CreateMap<Appointment,RequestAppointmentDto>();
-            CreateMap<RequestAppointmentDto, Appointment>();
-
+          
         }
     }
 }

@@ -16,7 +16,7 @@ namespace PMS.Domain.Entities
         public string HospitalName { get; set; }
         public string Reason { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-
+        public string? DoctorName { get; set; }
 
     }
 }

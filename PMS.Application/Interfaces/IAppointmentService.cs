@@ -7,7 +7,7 @@ namespace PMS.Application.Interfaces
     {
         Task<AppointmentDto> ScheduleAppointment(AppointmentDto appointmentDto);
         Task<AppointmentDto> GetAppointment(int appointmentId);
-        Task<AppointmentDto> UpdateAppointment(int appointmentId, RequestAppointmentDto appointment);
+        Task<AppointmentDto> UpdateAppointment(int appointmentId, AppointmentDto appointment);
         Task<List<AppointmentDto>> GetAppointmentsByPatientId(int patientId);
         Task<List<AppointmentDto>> GetAppointmentsByDoctorId(int doctorId);
         Task<Appointment> UpdateAppointmentStatus(Appointment appointment);

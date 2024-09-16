@@ -52,7 +52,7 @@ namespace PMS.Application.Services
         }
 
 
-        public async Task<AppointmentDto> UpdateAppointment(int appointmentId, RequestAppointmentDto updatedAppointmentDto)
+        public async Task<AppointmentDto> UpdateAppointment(int appointmentId, AppointmentDto updatedAppointmentDto)
         {
             if (updatedAppointmentDto == null)
                 throw new ArgumentNullException(nameof(updatedAppointmentDto));
