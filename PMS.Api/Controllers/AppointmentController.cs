@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PMS.Application.Interfaces;
 using PMS.Domain.Entities;
 using PMS.Domain.Entities.DTOs;
@@ -28,6 +29,7 @@ namespace PMS.Api.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetAppointment/{id:int}")]
         public async Task<IActionResult> GetAppointment(int appointmentId)
@@ -58,6 +60,7 @@ namespace PMS.Api.Controllers
             return Ok(updatedAppointment);
         }
 
+        [Authorize]
         [HttpGet]
         [Route("GetAppointmentByPatientId/{patientId:int}")]
         public async Task<IActionResult> GetAppointmentsByPatientId(int patientId)

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace PMS.Application.Services
 {
-    public class PatientService:IPatientService
+    public class PatientService:IPatientService,ILoginService<PatientDtl>
     {
         private readonly IPatientRepository _repository;
         private IConfiguration _config;
@@ -69,18 +69,19 @@ namespace PMS.Application.Services
             }
             return new PatientRes { IsSuccess = false, ErrorMessage = "Patient not added" };
         }
-        private async Task<LoginRes> AuthenticatePatient(LoginReq patient)
+        public async Task<LoginRes<PatientDtl>> AuthenticateUser(LoginReq patient)
         {
             //LoginReq _patient = null;
-            var patientLoginRes = new LoginRes();
+            var patientLoginRes = new LoginRes<PatientDtl>();
             try
             {
                 var patientOb = await _repository.GetPatientByEmail(patient.Email);
                 var patientReq = _mapper.Map<PatientDtl>(patientOb);
                 if (patientOb != null && (patient.Email == patientOb.PatientEmail && patient.Password == patientOb.Password))
                 {
-                    patientLoginRes.Patient = patientReq;
+                    patientLoginRes.User = patientReq;
                     patientLoginRes.IsLogged = true;
+                    patientLoginRes.IsPatient = true;
                 }
             }
             catch (Exception ex)
@@ -91,7 +92,7 @@ namespace PMS.Application.Services
             return patientLoginRes;
 
         }
-        private async Task<string> GenerateToken(LoginReq patient)
+        public async Task<string> GenerateToken()
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -102,15 +103,15 @@ namespace PMS.Application.Services
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-        public async Task<LoginRes> Login(LoginReq patient)
+        public async Task<LoginRes<PatientDtl>> Login(LoginReq patient)
         {
-            LoginRes _user = null;
+            LoginRes<PatientDtl> _user = null;
             try
             {
-                _user = await AuthenticatePatient(patient);
+                _user = await AuthenticateUser(patient);
                 if (_user != null && _user.IsLogged)
                 {
-                    _user.Token = await GenerateToken(patient);
+                    _user.Token = await GenerateToken();
                 }
             }
             catch (Exception e)
