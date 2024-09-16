@@ -35,6 +35,7 @@ namespace PMS.Infra
             existingAppointment.DoctorId = updatedAppointment.DoctorId;
             existingAppointment.AppointmentDate = updatedAppointment.AppointmentDate;
             existingAppointment.StatusId = updatedAppointment.StatusId;
+            existingAppointment.HospitalName = updatedAppointment.HospitalName;
             existingAppointment.Reason = updatedAppointment.Reason;
             existingAppointment.CreatedAt = updatedAppointment.CreatedAt;
 
@@ -44,13 +45,6 @@ namespace PMS.Infra
             return existingAppointment;
         }
 
-        /*public async Task<List<Appointment>> GetAppointmentsByPatientId(int patientId)
-        {
-            return await _applicationContext.Appointments
-                .Where(a => a.PatientId == patientId)
-                .Include(a => a.Doctor)
-                .ToListAsync();
-        }*/
         public async Task<List<AppointmentDto>> GetAppointmentsByPatientId(int patientId)
         {
             return await _applicationContext.Appointments
@@ -66,7 +60,7 @@ namespace PMS.Infra
                     HospitalName = a.HospitalName,
                     Reason = a.Reason,
                     CreatedAt = a.CreatedAt,
-                    DoctorName = a.Doctor.DoctorName 
+                    DoctorName = a.Doctor.DoctorName
                 })
                 .ToListAsync();
         }
@@ -89,6 +83,7 @@ namespace PMS.Infra
 
             return existingAppointment;
         }
+
 
         public async Task<List<Appointment>> GetAppointmentsByHospital(string hospitalName)
         {

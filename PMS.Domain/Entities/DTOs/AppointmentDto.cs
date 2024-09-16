@@ -18,11 +18,11 @@ namespace PMS.Domain.Entities
         public DateTime Dob { get; set; }
         public string Email { get; set; }
         public DateTime AppointmentDate { get; set; }
-        public int StatusId { get; set; }
+        public int StatusId { get; set; } = -1;
         public string HospitalName { get; set; }
         public string Reason { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public string? DoctorName { get; set; } 
-    }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string? DoctorName { get; set; }
 
+    }
 }

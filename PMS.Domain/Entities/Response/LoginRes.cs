@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace PMS.Domain.Entities.Response
 {
-    public class LoginRes
+    public class LoginRes<T>
     {
-        public PatientDtl Patient { get; set; }
+        public T User { get; set; }
         public bool IsLogged { get; set; } = false;
         public string Token { get; set; }
+        public bool IsPatient { get; set; }=false;
     }
 }
