@@ -8,6 +8,12 @@ namespace PMS.Domain.Entities
         public int AppointmentId { get; set; }
         public int PatientId { get; set; }
         public int DoctorId { get; set; }
+        public string Patientname { get; set; }
+        public string Gender { get; set; }
+        public int height { get; set; }
+        public int weight { get; set; }
+        public DateTime Dob { get; set; }
+        public string Email { get; set; }
         public DateTime AppointmentDate { get; set; } 
         public int StatusId { get; set; } = -1;
         public string HospitalName { get; set; }

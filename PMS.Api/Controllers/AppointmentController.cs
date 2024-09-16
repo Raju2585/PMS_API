@@ -18,6 +18,7 @@ namespace PMS.Api.Controllers
 
         [HttpPost]
         [Route("schedule")]
+        [Consumes(contentType:"application/Json")]
         public async Task<IActionResult> CreateAppointment([FromBody] AppointmentDto appointmentDto)
         {
             if (appointmentDto == null)
@@ -30,6 +31,7 @@ namespace PMS.Api.Controllers
 
         [HttpGet]
         [Route("Retrieve/{id:int}")]
+        
         public async Task<IActionResult> RetrieveAppointmentById(int appointmentId)
         {
             var appointment = await _appointmentService.GetAppointment(appointmentId);

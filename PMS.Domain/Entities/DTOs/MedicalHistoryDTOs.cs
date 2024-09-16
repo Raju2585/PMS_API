@@ -27,6 +27,10 @@ namespace PMS.Domain.Entities.DTOs
         public bool HasCholesterol { get; set; }
         public bool HasDiabetes { get; set; }
         public bool HasHeartDisease { get; set; }
+        public string ExerciseFrequency { get; set; }
+
+        public string AlcoholConsumption { get; set; }
+        public string Smoke { get; set; }
 
 
 
