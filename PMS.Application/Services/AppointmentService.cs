@@ -83,9 +83,10 @@ namespace PMS.Application.Services
 
             var appointments = await _appointmentRepository.GetAppointmentsByPatientId(patientId);
 
-            var appointmentDtos = _mapper.Map<List<AppointmentDto>>(appointments);
 
-            return appointmentDtos;
+            //var appointmentDtos = _mapper.Map<List<AppointmentDto>>(appointments);
+
+            return appointments;
         }
 
         public async Task<List<AppointmentDto>> GetAppointmentsByDoctorId(int doctorId)
