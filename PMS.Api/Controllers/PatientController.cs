@@ -35,7 +35,7 @@ namespace PMS.Api.Controllers
         }
         [HttpPost]
         [Route("Register")]
-        public async Task<ActionResult<PatientRes>> Register(PatientReq patientReq)
+        public async Task<IActionResult> Register(PatientReq patientReq)
         {
             var PatientRes = await _patientService.RegisterPatient(patientReq);
             if (PatientRes.IsSuccess)
@@ -43,15 +43,15 @@ namespace PMS.Api.Controllers
                 var device = await _deviceService.CreateDevice(PatientRes.PatientEmail);
                 var vitalSign = await _vitalSignService.CreateVitalSign(device.DeviceId);
                 device.VitalSign = vitalSign;
-                return PatientRes;
+                return Ok(PatientRes);
             }
 
             return Ok(PatientRes);
         }
         [AllowAnonymous]
         [HttpPost]
-        [Route("PatientLogin")]
-        public async Task<IActionResult> PatientLogin(LoginReq patient)
+        [Route("Login")]
+        public async Task<IActionResult> Login(LoginReq patient)
         {
             IActionResult response = Unauthorized();
             var loginRes = await _patientService.Login(patient);
