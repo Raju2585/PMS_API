@@ -12,11 +12,11 @@ namespace PMS.Domain.Entities
         public int PatientId { get; set; }
         public int DoctorId { get; set; }
         public DateTime AppointmentDate { get; set; }
-        public int StatusId { get; set; } = -1;
+        public int StatusId { get; set; }
         public string HospitalName { get; set; }
         public string Reason { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-
-
+        public DateTime CreatedAt { get; set; }
+        public string? DoctorName { get; set; } 
     }
+
 }

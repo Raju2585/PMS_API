@@ -76,7 +76,7 @@ namespace PMS.Application.Services
             try
             {
                 var patientOb = await _repository.GetPatientByEmail(patient.Email);
-                var patientReq = _mapper.Map<PatientReq>(patientOb);
+                var patientReq = _mapper.Map<PatientDtl>(patientOb);
                 if (patientOb != null && (patient.Email == patientOb.PatientEmail && patient.Password == patientOb.Password))
                 {
                     patientLoginRes.Patient = patientReq;
