@@ -16,5 +16,7 @@ namespace PMS.Application.Repository_Interfaces
         Task<List<Hospital>> GetHospitalByPinCode(int pinCode);
 
         Task<Hospital> GetHospitalById(int id);
+
+        Task<Hospital> AddHospitalAsync(Hospital hospital);
     }
 }

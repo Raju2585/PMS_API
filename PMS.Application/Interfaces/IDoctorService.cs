@@ -1,4 +1,5 @@
-﻿using PMS.Domain.NewFolder;
+﻿using Microsoft.AspNetCore.Http;
+using PMS.Domain.NewFolder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace PMS.Application.Interfaces
         Task<DoctorDTO> GetDoctorByID(int doctorId);
 
         Task<List<DoctorDTO>>  GetDoctorsBySpecialist(string Specialist);
+
+        Task<DoctorDTO> AddDoctorAsync(string DoctorName, string Specialization, Decimal ConsultationFee, bool isAvailable, IFormFile image);
 
     }
 }

@@ -34,5 +34,12 @@ namespace PMS.Infra
             var doctorBySpecialst=await _context.Doctors.Where(s=>s.Specialization==Specialist).ToListAsync();
             return doctorBySpecialst;
         }
+        public async Task<Doctor> AddDoctorAsync(Doctor doctor)
+        {
+            _context.Doctors.Add(doctor);
+
+            await _context.SaveChangesAsync();
+            return doctor;
+        }
     }
 }
