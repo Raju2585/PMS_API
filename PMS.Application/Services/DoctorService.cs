@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using PMS.Application.Interfaces;
 using PMS.Application.Repository_Interfaces;
+using PMS.Domain.Entities;
 using PMS.Domain.NewFolder;
 using System;
 using System.Collections.Generic;
@@ -85,5 +87,36 @@ namespace PMS.Application.Services
                 throw new ArgumentException("Error occured while retrieving the doctory details by specailist",ex.Message);
             }
         }
+        public async Task<DoctorDTO> AddDoctorAsync(string doctorName, string specialization, decimal consultationFee, bool isAvailable, IFormFile image)
+        {
+           
+            var doctor = new DoctorDTO
+            {
+                DoctorName = doctorName,
+                Specialization = specialization,
+                ConsultationFee = consultationFee,
+                IsAvailable = isAvailable,
+           
+            };
+
+           
+            if (image != null && image.Length > 0)
+            {
+               
+                using (var imageStream = new MemoryStream())
+                {
+                    await image.CopyToAsync(imageStream);
+                    doctor.Image = imageStream.ToArray();
+                }
+            }
+            var doctorEntity = _mapper.Map<Doctor>(doctor); 
+
+            var addedDoctorEntity = await _doctorRepository.AddDoctorAsync(doctorEntity);
+
+            var addedDoctorDto = _mapper.Map<DoctorDTO>(addedDoctorEntity);
+
+            return addedDoctorDto;
+        }
+
     }
 }

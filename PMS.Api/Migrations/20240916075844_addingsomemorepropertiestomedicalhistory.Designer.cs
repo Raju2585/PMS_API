@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PMS.Infra;
 
@@ -11,9 +12,11 @@ using PMS.Infra;
 namespace PMS.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240916075844_addingsomemorepropertiestomedicalhistory")]
+    partial class addingsomemorepropertiestomedicalhistory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,19 +39,8 @@ namespace PMS.Api.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Dob")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("DoctorId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HospitalName")
                         .IsRequired()
@@ -57,21 +49,11 @@ namespace PMS.Api.Migrations
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Patientname")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Reason")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("height")
-                        .HasColumnType("int");
-
-                    b.Property<int>("weight")
                         .HasColumnType("int");
 
                     b.HasKey("AppointmentId");
@@ -214,6 +196,13 @@ namespace PMS.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("DoctorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ExcerciseFrequency")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -316,21 +305,19 @@ namespace PMS.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReceptionistId"));
 
-                    b.Property<string>("Email")
+                    b.Property<string>("HospitalName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HospitalId")
-                        .HasColumnType("int");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ReceptionistId");
-
-                    b.HasIndex("HospitalId")
-                        .IsUnique();
 
                     b.ToTable("Receptionists");
                 });
@@ -448,17 +435,6 @@ namespace PMS.Api.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("PMS.Domain.Entities.Receptionist", b =>
-                {
-                    b.HasOne("PMS.Domain.Entities.Hospital", "Hospital")
-                        .WithOne("Receptionist")
-                        .HasForeignKey("PMS.Domain.Entities.Receptionist", "HospitalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Hospital");
-                });
-
             modelBuilder.Entity("PMS.Domain.Entities.VitalSign", b =>
                 {
                     b.HasOne("PMS.Domain.Entities.Device", "Device")
@@ -490,9 +466,6 @@ namespace PMS.Api.Migrations
             modelBuilder.Entity("PMS.Domain.Entities.Hospital", b =>
                 {
                     b.Navigation("Doctors");
-
-                    b.Navigation("Receptionist")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("PMS.Domain.Entities.Patient", b =>

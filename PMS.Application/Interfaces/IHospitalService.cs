@@ -1,4 +1,5 @@
-﻿using PMS.Domain.Entities;
+﻿using Microsoft.AspNetCore.Http;
+using PMS.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace PMS.Application.Interfaces
         Task<List<Hospital>> GetHospitalByPinCode(int pinCode);
 
         Task<Hospital> GetHospitalById(int id);
+
+        Task<Hospital> AddHospitalAsync(string hospitalName, string city, int pincode, IFormFile? imageFile);
 
     }
 }

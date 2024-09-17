@@ -59,5 +59,19 @@ namespace PMS.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPost]
+        [Route("Add/Doctors")]
+        public async Task<ActionResult<DoctorDTO>> AddDoctor([FromBody] string doctorName, string specialization, decimal consultationFee, bool isAvailable, IFormFile image)
+        {
+            try
+            {
+                var doctors = await _doctorService.AddDoctorAsync(doctorName, specialization, consultationFee, isAvailable, image);
+                return Ok(doctors);
+            }
+            catch( Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -9,11 +9,11 @@ namespace PMS.Domain.Entities
         [Key]
         public int HistoryId { get; set; }
         public int PatientId { get; set; }
-        public int DoctorId { get; set; }
+        //public int DoctorId { get; set; }
         public DateTime RecordedDate { get; set; }
         public string Reason { get; set; }
 
-        public string DoctorName { get; set; }
+        //public string DoctorName { get; set; }
         public string HospitalName { get; set; }
         public List<string> Medication { get; set; } = new List<string>();
 
@@ -24,9 +24,10 @@ namespace PMS.Domain.Entities
         public bool HasCholesterol { get; set; }
         public bool HasDiabetes { get; set; }
         public bool HasHeartDisease { get; set; }
+        public string ExcerciseFrequency {  get; set; }
 
-        
-
+        public string AlcoholConsumption {  get; set; }
+        public string Smoke {  get; set; }
         // Navigation properties
         public virtual Patient Patient { get; set; }
     }
