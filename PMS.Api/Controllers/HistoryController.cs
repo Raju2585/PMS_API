@@ -20,6 +20,7 @@ namespace PMS.Api.Controllers
         }
 
         [HttpPost]
+        [Route("AddMedicalhistory")]
         public async Task<IActionResult> AddMedicalHistory([FromBody] MedicalHistoryDTOs medicalHistorydto)
         {
             var MedicalHistoryAdded = await _medicalhistoryService.AddMedicalHistory(medicalHistorydto);
@@ -27,6 +28,7 @@ namespace PMS.Api.Controllers
         }
 
         [HttpGet]
+        [Route("GetMedicalhistory/{id:int}")]
         public async Task<ActionResult<List<MedicalHistoryDTOs>>> GetMedicalHistoryByPatient(int patientId)
         {
             var medicalHistories = await _medicalhistoryService.GetMedicalHistoryByPatient(patientId);
