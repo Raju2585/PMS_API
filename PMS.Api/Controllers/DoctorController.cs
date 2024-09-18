@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using PMS.Application.Interfaces;
 using PMS.Domain.Entities;
 using PMS.Domain.NewFolder;
+using System.Numerics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PMS.Api.Controllers
 {
@@ -17,7 +19,7 @@ namespace PMS.Api.Controllers
         }
         [HttpGet]
         [Route("Get/All/Doctors")]
-        public async Task<ActionResult<List<DoctorDTO>>> GetAllDoctors() 
+        public async Task<ActionResult<List<Doctor>>> GetAllDoctors()
         {
             try
             {
@@ -31,44 +33,45 @@ namespace PMS.Api.Controllers
         }
         [HttpGet]
         [Route("Get/DoctorById/{id}")]
-        public async Task<ActionResult<DoctorDTO>> GetDoctorDTOAsync(int id)
+        public async Task<ActionResult<Doctor>> GetDoctorDTOAsync(int id)
         {
             try
             {
                 var doctorDetails = await _doctorService.GetDoctorByID(id);
                 return Ok(doctorDetails);
-              
+
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-           
+
         }
         [HttpGet]
         [Route("Get/Doctor/{specailist}")]
-        public async Task<ActionResult<DoctorDTO>> GetDoctorBySpecialist(string specailist)
+        public async Task<ActionResult<Doctor>> GetDoctorBySpecialist(string specailist)
         {
             try
             {
                 var doctorsListBySpecialist = await _doctorService.GetDoctorsBySpecialist(specailist);
                 return Ok(doctorsListBySpecialist);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost]
-        [Route("Add/Doctors")]
-        public async Task<ActionResult<DoctorDTO>> AddDoctor([FromBody] string doctorName, string specialization, decimal consultationFee, bool isAvailable, IFormFile image)
+
+        [HttpGet]
+        [Route("Get/Doctor/HospitalId/{hospitalId}")]
+        public async Task<ActionResult<Doctor>> GetDoctorsByHospitals(int hospitalId)
         {
             try
             {
-                var doctors = await _doctorService.AddDoctorAsync(doctorName, specialization, consultationFee, isAvailable, image);
+                var doctors = await _doctorService.GetDoctorsByHospitalId(hospitalId);
                 return Ok(doctors);
             }
-            catch( Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

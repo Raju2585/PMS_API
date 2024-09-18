@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using PMS.Application.Interfaces;
 using PMS.Application.Repository_Interfaces;
@@ -13,18 +14,17 @@ using System.Threading.Tasks;
 
 namespace PMS.Application.Services
 {
-    public class DoctorService:IDoctorService
+    public class DoctorService : IDoctorService
     {
         private readonly IDoctorRepository _doctorRepository;
-        private readonly IConfiguration _configuration;
-        private readonly IMapper _mapper;
-        public DoctorService(IDoctorRepository doctorRepository,IConfiguration configuration,IMapper mapper) {
 
-            _doctorRepository= doctorRepository;
-            _configuration= configuration;
-            _mapper = mapper;
+        public DoctorService(IDoctorRepository doctorRepository, IConfiguration configuration, IMapper mapper)
+        {
+
+            _doctorRepository = doctorRepository;
+
         }
-        public async Task<List<DoctorDTO>> GetAllDoctorsDTO()
+        public async Task<List<Doctor>> GetAllDoctorsDTO()
         {
             try
             {
@@ -32,17 +32,17 @@ namespace PMS.Application.Services
 
                 if (doctors == null || !doctors.Any())
                 {
-                    return new List<DoctorDTO>();
+                    return new List<Doctor>();
                 }
-                var doctorsList = _mapper.Map<List<DoctorDTO>>(doctors);
-                return doctorsList;
+
+                return doctors;
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("An error occured while retrieving docts.",ex.Message);
+                throw new ArgumentException("An error occured while retrieving docts.", ex.Message);
             }
         }
-        public async Task<DoctorDTO> GetDoctorByID(int doctorId)
+        public async Task<Doctor> GetDoctorByID(int doctorId)
         {
             try
             {
@@ -53,70 +53,68 @@ namespace PMS.Application.Services
                 }
                 var doctorDetails = await _doctorRepository.GetDoctorById(doctorId);
 
-                if(doctorDetails == null)
-                {
-                    return null;
-                }
-                var doctorDto = _mapper.Map<DoctorDTO>(doctorDetails);
-                return doctorDto;
 
-                
+                return doctorDetails;
+
+
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
-                    throw new ArgumentException("Error occured while retrieving the doctor detials", ex.Message);
+                throw new ArgumentException("Error occured while retrieving the doctor detials", ex.Message);
 
             }
         }
-        public async Task<List<DoctorDTO>> GetDoctorsBySpecialist(string Specialist)
+        public async Task<List<Doctor>> GetDoctorsBySpecialist(string Specialist)
         {
             try
             {
                 if (string.IsNullOrEmpty(Specialist))
                 {
-                    return new List<DoctorDTO>();
+                    return new List<Doctor>();
                 }
                 var doctors = await _doctorRepository.GetDoctorsBySpecialist(Specialist);
 
-                var doctorDtos = _mapper.Map<List<DoctorDTO>>(doctors);
 
-                return doctorDtos;
+                return doctors;
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("Error occured while retrieving the doctory details by specailist",ex.Message);
+                throw new ArgumentException("Error occured while retrieving the doctory details by specailist", ex.Message);
             }
         }
-        public async Task<DoctorDTO> AddDoctorAsync(string doctorName, string specialization, decimal consultationFee, bool isAvailable, IFormFile image)
+        public async Task<List<Doctor>> GetDoctorsByHospitalId(int hospitalId)
         {
-           
-            var doctor = new DoctorDTO
+            try
             {
-                DoctorName = doctorName,
+                if (hospitalId <= 0)
+                {
+                    throw new ArgumentException("Invalid Hospital Id");
+                }
+                var doctors = await _doctorRepository.GetDoctorsByHospitalId(hospitalId);
+                return doctors;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
+        }
+        public async Task<Doctor> AddDoctors(string Doctorname, string email, string specialization, string contact, decimal consultationFee, bool isAvailable, int hospitalId, IFormFile? file)
+        {
+            var doctor = new Doctor
+            {
+                DoctorName = Doctorname,
+                DoctorEmail = email,
                 Specialization = specialization,
+                ContactNumber = contact,
                 ConsultationFee = consultationFee,
                 IsAvailable = isAvailable,
-           
+                HospitalId = hospitalId,
+
+
             };
-
-           
-            if (image != null && image.Length > 0)
-            {
-               
-                using (var imageStream = new MemoryStream())
-                {
-                    await image.CopyToAsync(imageStream);
-                    doctor.Image = imageStream.ToArray();
-                }
-            }
-            var doctorEntity = _mapper.Map<Doctor>(doctor); 
-
-            var addedDoctorEntity = await _doctorRepository.AddDoctorAsync(doctorEntity);
-
-            var addedDoctorDto = _mapper.Map<DoctorDTO>(addedDoctorEntity);
-
-            return addedDoctorDto;
+            return doctor;
         }
+
 
     }
 }

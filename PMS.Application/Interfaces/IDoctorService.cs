@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using PMS.Domain.Entities;
 using PMS.Domain.NewFolder;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,15 @@ namespace PMS.Application.Interfaces
 {
     public interface IDoctorService
     {
-        Task<List<DoctorDTO>> GetAllDoctorsDTO();
+        Task<List<Doctor>> GetAllDoctorsDTO();
 
-        Task<DoctorDTO> GetDoctorByID(int doctorId);
+        Task<Doctor> GetDoctorByID(int doctorId);
 
-        Task<List<DoctorDTO>>  GetDoctorsBySpecialist(string Specialist);
+        Task<List<Doctor>>  GetDoctorsBySpecialist(string Specialist);
 
-        Task<DoctorDTO> AddDoctorAsync(string DoctorName, string Specialization, Decimal ConsultationFee, bool isAvailable, IFormFile image);
+        Task<List<Doctor>> GetDoctorsByHospitalId(int hospitalId);
+
+        Task<Doctor> AddDoctors(string Doctorname, string email, string specialization, string contact, decimal consultationFee, bool isAvailable, int hospitalId, IFormFile? file);
 
     }
 }
