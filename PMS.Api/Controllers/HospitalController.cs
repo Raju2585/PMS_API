@@ -72,6 +72,20 @@ namespace PMS.Api.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [HttpPost]
+        [Route("Add/Hospitals")]
+        public async Task<ActionResult<Hospital>> AddHospitals([FromForm] string hospitalName, string city, int pincode, IFormFile? imageFile)
+        {
+            try
+            {
+                var hospitals = await _hospitalService.AddHospitalAsync(hospitalName, city, pincode, imageFile);
+                return Ok(hospitals);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
     }
 }

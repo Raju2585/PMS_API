@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace PMS.Infra
 {
-    public class DoctorRepository:IDoctorRepository
+    public class DoctorRepository : IDoctorRepository
     {
-      private readonly IApplicationDbContext _context;
+        private readonly IApplicationDbContext _context;
 
         public DoctorRepository(IApplicationDbContext context)
         {
@@ -25,14 +25,26 @@ namespace PMS.Infra
 
         public async Task<Doctor> GetDoctorById(int id)
         {
-            var doctorDetails= await  _context.Doctors.FirstOrDefaultAsync(s=>s.HospitalId==id);
-            return  doctorDetails;
+            var doctorDetails = await _context.Doctors.FirstOrDefaultAsync(s => s.HospitalId == id);
+            return doctorDetails;
 
         }
         public async Task<List<Doctor>> GetDoctorsBySpecialist(string Specialist)
         {
-            var doctorBySpecialst=await _context.Doctors.Where(s=>s.Specialization==Specialist).ToListAsync();
+            var doctorBySpecialst = await _context.Doctors.Where(s => s.Specialization == Specialist).ToListAsync();
             return doctorBySpecialst;
+        }
+        public async Task<Doctor> AddDoctorAsync(Doctor doctor)
+        {
+            _context.Doctors.Add(doctor);
+
+            await _context.SaveChangesAsync();
+            return doctor;
+        }
+        public async Task<List<Doctor>> GetDoctorsByHospitalId(int hospitalId)
+        {
+            var doctorsByHospital = await _context.Doctors.Where(s => s.HospitalId == hospitalId && s.IsAvailable == true).ToListAsync();
+            return doctorsByHospital;
         }
     }
 }

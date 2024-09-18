@@ -39,6 +39,14 @@ namespace PMS.Infra
             var hospitals = await _context.Hospitals.FirstOrDefaultAsync(s => s.HospitalId == id);
             return hospitals;
         }
+        public async Task<Hospital> AddHospitalAsync(Hospital hospital)
+        {
+            _context.Hospitals.Add(hospital);
+
+            await _context.SaveChangesAsync();
+
+            return hospital;
+        }
 
 
     }
