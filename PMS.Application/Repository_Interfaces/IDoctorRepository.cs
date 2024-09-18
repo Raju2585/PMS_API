@@ -15,5 +15,7 @@ namespace PMS.Application.Repository_Interfaces
         Task<Doctor> GetDoctorById(int id);
 
         Task<List<Doctor>> GetDoctorsBySpecialist(string Specialist);
+        Task<List<Doctor>> GetDoctorsByHospitalId(int hospitalId);
+        Task<Doctor> AddDoctorAsync(Doctor doctor);
     }
 }

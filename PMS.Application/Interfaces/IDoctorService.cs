@@ -1,4 +1,5 @@
-﻿using PMS.Domain.NewFolder;
+﻿using PMS.Domain.Entities;
+using PMS.Domain.NewFolder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,12 @@ namespace PMS.Application.Interfaces
 {
     public interface IDoctorService
     {
-        Task<List<DoctorDTO>> GetAllDoctorsDTO();
+        Task<List<Doctor>> GetAllDoctorsDTO();
 
-        Task<DoctorDTO> GetDoctorByID(int doctorId);
+        Task<Doctor> GetDoctorByID(int doctorId);
 
-        Task<List<DoctorDTO>>  GetDoctorsBySpecialist(string Specialist);
+        Task<List<Doctor>>  GetDoctorsBySpecialist(string Specialist);
+        Task<List<Doctor>> GetDoctorsByHospitalId(int hospitalId);
 
     }
 }
