@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿    using Microsoft.EntityFrameworkCore;
 using PMS.Application.Repository_Interfaces;
 using PMS.Domain.Entities;
 
@@ -85,14 +85,32 @@ namespace PMS.Infra
         }
 
 
-        public async Task<List<Appointment>> GetAppointmentsByHospital(string hospitalName)
+        public async Task<List<AppointmentDto>> GetAppointmentsByHospital(string hospitalName)
         {
             if (string.IsNullOrWhiteSpace(hospitalName))
                 throw new ArgumentException("Hospital name cannot be null or empty", nameof(hospitalName));
 
-            return await _applicationContext.Appointments
+            /*return await _applicationContext.Appointments
                 .Where(a => a.HospitalName == hospitalName)
                 
+                .ToListAsync();*/
+            return await _applicationContext.Appointments
+                .Where(r=>r.HospitalName==hospitalName)
+                .Include(a => a.Doctor)
+                .Select(a => new AppointmentDto
+                {
+                    AppointmentId = a.AppointmentId,
+                    PatientId = a.PatientId,
+                    DoctorId = a.DoctorId,
+                    AppointmentDate = a.AppointmentDate,
+                    StatusId = a.StatusId,
+                    HospitalName = a.HospitalName,
+                    Reason = a.Reason,
+                    CreatedAt = a.CreatedAt,
+                    Gender=a.Gender,
+                    Email = a.Email,
+                    DoctorName = a.Doctor.DoctorName
+                })
                 .ToListAsync();
         }
 

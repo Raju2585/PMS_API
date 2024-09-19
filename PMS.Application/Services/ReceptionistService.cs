@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AutoMapper;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PMS.Application.Interfaces;
 using PMS.Application.Repository_Interfaces;
 using PMS.Domain.Entities;
+using PMS.Domain.Entities.DTOs;
 using PMS.Domain.Entities.Request;
 using PMS.Domain.Entities.Response;
 using System;
@@ -14,16 +16,18 @@ using System.Threading.Tasks;
 
 namespace PMS.Application.Services
 {
-    public class ReceptionistService:IReceptionistService,ILoginService<Receptionist>
+    public class ReceptionistService:IReceptionistService,ILoginService<ReceptionistDtl>
     {
         private readonly IReceptionistRepository _receptionistRepository;
         private readonly IConfiguration _config;
-        public ReceptionistService(IReceptionistRepository receptionistRepository, IConfiguration config)
+        private readonly IMapper _mappers;
+        public ReceptionistService(IReceptionistRepository receptionistRepository, IConfiguration config, IMapper mappers)
         {
             _receptionistRepository = receptionistRepository;
             _config=config;
+            _mappers = mappers;
         }
-        public async Task<Receptionist> GetReceptionistByEmail(string email)
+        public async Task<ReceptionistDtl> GetReceptionistByEmail(string email)
         {
             try
             {
@@ -39,9 +43,9 @@ namespace PMS.Application.Services
             }
             return null;
         }
-        public async Task<LoginRes<Receptionist>> AuthenticateUser(LoginReq user)
+        public async Task<LoginRes<ReceptionistDtl>> AuthenticateUser(LoginReq user)
         {
-            var LoginRes = new LoginRes<Receptionist>();
+            var LoginRes = new LoginRes<ReceptionistDtl>();
             try
             {
                 var receptionistOb = await _receptionistRepository.GetReceptionistByEmail(user.Email);
@@ -70,9 +74,9 @@ namespace PMS.Application.Services
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-        public async Task<LoginRes<Receptionist>> Login(LoginReq patient)
+        public async Task<LoginRes<ReceptionistDtl>> Login(LoginReq patient)
         {
-            LoginRes<Receptionist> _user = null;
+            LoginRes<ReceptionistDtl> _user = null;
             try
             {
                 _user = await AuthenticateUser(patient);

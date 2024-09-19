@@ -1,4 +1,5 @@
 ﻿using PMS.Domain.Entities;
+using PMS.Domain.Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace PMS.Application.Repository_Interfaces
 {
     public interface IReceptionistRepository
     {
-        public Task<Receptionist> GetReceptionistByEmail(string email);
+        public Task<ReceptionistDtl> GetReceptionistByEmail(string email);
     }
 }

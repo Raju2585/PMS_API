@@ -10,7 +10,7 @@ namespace PMS.Domain.Entities
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
+        public string ReceptionistName { get; set; }
         public int HospitalId { get; set; }
         public string Password { get; set; }
 
