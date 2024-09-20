@@ -79,20 +79,15 @@ namespace PMS.Api.Controllers
 
         [HttpPut]
         [Route("UpdateStatus/{appointmentId:int}")]
-        public async Task<IActionResult> UpdateAppointmentStatus(int appointmentId, [FromQuery] int status)
+        public async Task<IActionResult> UpdateAppointmentStatus(int appointmentId)
         {
             
-            if (status != 0 && status != 1)
-            {
-                return BadRequest("Invalid statusId. Must be 0 (cancelled) or 1 (booked).");
-            }
-
             try
             {
                 var appointment = new Appointment
                 {
                     AppointmentId = appointmentId,
-                    StatusId = status
+                    StatusId = 1
                 };
 
                 

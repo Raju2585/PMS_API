@@ -90,18 +90,15 @@ namespace PMS.Infra
             if (string.IsNullOrWhiteSpace(hospitalName))
                 throw new ArgumentException("Hospital name cannot be null or empty", nameof(hospitalName));
 
-            /*return await _applicationContext.Appointments
-                .Where(a => a.HospitalName == hospitalName)
-                
-                .ToListAsync();*/
             return await _applicationContext.Appointments
-                .Where(r=>r.HospitalName==hospitalName)
+                .Where(r=>r.HospitalName==hospitalName && r.StatusId!=0)
                 .Include(a => a.Doctor)
                 .Select(a => new AppointmentDto
                 {
                     AppointmentId = a.AppointmentId,
                     PatientId = a.PatientId,
                     DoctorId = a.DoctorId,
+                    PatientName=a.Patientname,
                     AppointmentDate = a.AppointmentDate,
                     StatusId = a.StatusId,
                     HospitalName = a.HospitalName,
