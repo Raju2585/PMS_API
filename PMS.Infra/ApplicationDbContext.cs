@@ -22,7 +22,7 @@ namespace PMS.Infra
         public DbSet<VitalSign> VitalSigns { get; set; }
         public DbSet<Receptionist> Receptionists { get; set; }
         public DbSet<Hospital> Hospitals { get; set; }
-
+        public DbSet<Doctor_Slots> Doctor_Slots { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure one-to-one relationship between Patient and Device
@@ -81,6 +81,11 @@ namespace PMS.Infra
                .WithOne(h => h.Receptionist)
                .HasForeignKey<Receptionist>(r => r.HospitalId)
                .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Doctor_Slots>()
+                .HasOne(d=>d.Doctor)
+                .WithOne()
+                .HasForeignKey<Doctor_Slots>(s=>s.DoctorId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
         public async Task<int> SaveChangesAsync()
