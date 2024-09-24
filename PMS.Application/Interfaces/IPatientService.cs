@@ -11,6 +11,7 @@ namespace PMS.Application.Interfaces
 {
     public interface IPatientService
     {
+        Task<PatientDtl> GetPatientById(int patientId);
         Task<List<PatientDtl>> GetAllPatientDtls();
         Task<PatientRes> RegisterPatient(PatientReq patientReq);
         Task<LoginRes<PatientDtl>> Login(LoginReq patient);
