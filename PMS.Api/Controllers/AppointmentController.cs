@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using PMS.Application.Interfaces;
 using PMS.Domain.Entities;
 using PMS.Domain.Entities.DTOs;
+using System.Net.Mail;
+using System.Net;
+using PMS.Domain.Entities.Response;
 
 namespace PMS.Api.Controllers
 {
@@ -12,9 +15,19 @@ namespace PMS.Api.Controllers
     public class AppointmentController : Controller
     {
         private readonly IAppointmentService _appointmentService;
-        public AppointmentController(IAppointmentService appointmentService)
+        private readonly IPatientService _patientService;
+        private readonly IDoctorService _doctorService;
+        private readonly IEmailService _emailService;
+        private readonly INotificationService _notificationService;
+      
+        public AppointmentController(IAppointmentService appointmentService,IPatientService patientService,IDoctorService doctorService,IEmailService emailService,INotificationService notificationService)
         {
             _appointmentService = appointmentService;
+            _patientService = patientService;
+            _doctorService = doctorService;
+            _emailService = emailService;
+            _notificationService = notificationService;
+           
         }
 
         [HttpPost]
@@ -79,9 +92,14 @@ namespace PMS.Api.Controllers
 
         [HttpPut]
         [Route("UpdateStatus/{appointmentId:int}")]
-        public async Task<IActionResult> UpdateAppointmentStatus(int appointmentId)
+        public async Task<IActionResult> UpdateAppointmentStatus(int appointmentId, [FromQuery] int status)
         {
             
+            if (status != 0 && status != 1)
+            {
+                return BadRequest("Invalid statusId. Must be 0 (cancelled) or 1 (booked).");
+            }
+
             try
             {
                 var appointment = new Appointment
@@ -98,8 +116,27 @@ namespace PMS.Api.Controllers
                 {
                     return NotFound("Appointment not found.");
                 }
+                if (status == 1)
+                {
+                  var doctor= await _doctorService.GetDoctorByID(updatedAppointment.DoctorId);
+                  var patient= await _patientService.GetPatientById(updatedAppointment.PatientId);
 
-                
+                    if (doctor == null || patient == null)
+                    {
+                        return NotFound("Doctor or Patient not found.");
+                    }
+
+                    var emailBody = await _emailService.GenerateEmailBody(patient, updatedAppointment, doctor);
+
+                  _emailService.SendEmailNotification(patient.PatientEmail, "Appointment Confirmation", emailBody);
+
+                    _notificationService.CreateNotificationForAppointment(updatedAppointment);
+
+                }
+
+
+
+
                 return Ok(updatedAppointment);
             }
             catch (ArgumentException ex)
@@ -118,6 +155,7 @@ namespace PMS.Api.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+      
         [HttpGet("GetHospitalName/{hospitalName}")]
         public async Task<IActionResult> GetAppointmentsByHospital(string hospitalName)
         {

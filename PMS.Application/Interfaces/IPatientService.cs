@@ -15,5 +15,6 @@ namespace PMS.Application.Interfaces
         Task<List<PatientDtl>> GetAllPatientDtls();
         Task<PatientRes> RegisterPatient(PatientReq patientReq);
         Task<LoginRes<PatientDtl>> Login(LoginReq patient);
+        Task<PatientDtl> GetPatientById(int patientId);
     }
 }

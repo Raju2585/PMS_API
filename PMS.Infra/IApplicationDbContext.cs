@@ -20,6 +20,7 @@ namespace PMS.Infra
         DbSet<Receptionist> Receptionists { get; set; }
         DbSet<Hospital> Hospitals { get; set; }
 
+        DbSet<Notification> Notifications { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         int SaveChanges();
     }

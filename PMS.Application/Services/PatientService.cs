@@ -132,5 +132,17 @@ namespace PMS.Application.Services
             }
             return _user;
         }
+        public async Task<PatientDtl> GetPatientById(int patientId)
+        {
+            try
+            {
+                var patient = await _repository.GetPatientById(patientId);
+                return _mapper.Map<PatientDtl>(patient);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }
