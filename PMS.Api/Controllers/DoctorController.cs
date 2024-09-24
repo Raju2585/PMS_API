@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PMS.Application.Interfaces;
 using PMS.Domain.Entities;
 using PMS.Domain.NewFolder;
+using System.Net.WebSockets;
 using System.Numerics;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -76,5 +77,23 @@ namespace PMS.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("Add/Doctors")]
+        public async Task<ActionResult<Doctor>> AddDoctors([FromForm] string Doctorname, string email, string specialization, string contact, decimal consultationFee, bool isAvailable, int hospitalId, IFormFile? file) 
+            {
+                try
+                {
+                    var doctors = await _doctorService.AddDoctors(Doctorname, email, specialization, contact, consultationFee, isAvailable, hospitalId, file); ;
+                    return Ok(doctors);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+
+            }
+
+        }
     }
-}
+  

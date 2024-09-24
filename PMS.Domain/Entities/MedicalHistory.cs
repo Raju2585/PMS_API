@@ -10,7 +10,7 @@ namespace PMS.Domain.Entities
         public int HistoryId { get; set; }
         public int PatientId { get; set; }
         //public int DoctorId { get; set; }
-        public DateTime RecordedDate { get; set; }
+        public DateTime RecordedDate { get; set; }=DateTime.Now;
         public string Reason { get; set; }
 
         //public string DoctorName { get; set; }

@@ -100,20 +100,40 @@ namespace PMS.Application.Services
         }
         public async Task<Doctor> AddDoctors(string Doctorname, string email, string specialization, string contact, decimal consultationFee, bool isAvailable, int hospitalId, IFormFile? file)
         {
-            var doctor = new Doctor
+            try
             {
-                DoctorName = Doctorname,
-                DoctorEmail = email,
-                Specialization = specialization,
-                ContactNumber = contact,
-                ConsultationFee = consultationFee,
-                IsAvailable = isAvailable,
-                HospitalId = hospitalId,
+                var doctor = new Doctor
+                {
+                    DoctorName = Doctorname,
+                    DoctorEmail = email,
+                    Specialization = specialization,
+                    ContactNumber = contact,
+                    ConsultationFee = consultationFee,
+                    IsAvailable = isAvailable,
+                    HospitalId = hospitalId,
 
 
-            };
-            return doctor;
+                };
+                if (file != null && file.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(memoryStream);
+                        doctor.Image = memoryStream.ToArray();
+                    }
+
+                }
+                var Doctors = await _doctorRepository.AddDoctorAsync(doctor);
+                return Doctors;
+            }catch (DbUpdateException ex)
+            {
+                var innerException = ex.InnerException?.Message;
+                // Log the error or throw a custom exception
+                throw new Exception($"An error occurred: {innerException}");
+
+            }
         }
+
 
 
     }
