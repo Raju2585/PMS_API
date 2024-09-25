@@ -14,5 +14,7 @@ namespace PMS.Application.Interfaces
         Task<Appointment> UpdateAppointmentStatus(Appointment appointment);
         Task<List<AppointmentDto>> GetAppointmentsByHospital(string hospital);
 
+        
+
     }
 }

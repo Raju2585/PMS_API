@@ -30,6 +30,18 @@ namespace PMS.Application.Services
             _mapper = mapper;
         }
 
+        public async Task<PatientDtl> GetPatientById(int patientId)
+        {
+            try
+            {
+                var patient = await _repository.GetPatientById(patientId);
+                return patient;
+            }
+            catch (Exception ex)
+            {               
+                return null; 
+            }
+        }
 
         public async Task<List<PatientDtl>> GetAllPatientDtls()
         {
@@ -119,6 +131,18 @@ namespace PMS.Application.Services
                 return _user;
             }
             return _user;
+        }
+        public async Task<PatientDtl> GetPatientById(int patientId)
+        {
+            try
+            {
+                var patient = await _repository.GetPatientById(patientId);
+                return _mapper.Map<PatientDtl>(patient);
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
     }
 }

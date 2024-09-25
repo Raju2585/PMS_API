@@ -26,6 +26,8 @@ namespace PMS.Domain.Entities
         public virtual ICollection<Consultation> Consultations { get; set; } = new List<Consultation>();
         public virtual ICollection<MedicalHistory> MedicalHistories { get; set; } = new List<MedicalHistory>();
         public virtual Device Device { get; set; }  
+
+        public virtual ICollection<Notification> Notification { get; set; }= new List<Notification>();
     }
 
 }

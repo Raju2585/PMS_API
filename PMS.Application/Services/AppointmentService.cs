@@ -3,6 +3,8 @@ using PMS.Application.Interfaces;
 using PMS.Application.Repository_Interfaces;
 using PMS.Domain.Entities;
 using PMS.Domain.Entities.DTOs;
+using System.Net.Mail;
+using System.Net;
 using PMS.Domain.Entities.Response;
 
 namespace PMS.Application.Services
@@ -232,6 +234,10 @@ namespace PMS.Application.Services
             }
             existingAppointment.StatusId = appointment.StatusId;
 
+            //sending email
+         
+        
+
             return await _appointmentRepository.UpdateAppointmentStatus(existingAppointment);
         }
 
@@ -239,5 +245,7 @@ namespace PMS.Application.Services
         {
             return _appointmentRepository.GetAppointmentsByHospital(hospitalName);
         }
+
+      
     }
 }

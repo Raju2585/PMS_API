@@ -297,6 +297,34 @@ namespace PMS.Api.Migrations
                     b.ToTable("MedicalHistories");
                 });
 
+            modelBuilder.Entity("PMS.Domain.Entities.Notification", b =>
+                {
+                    b.Property<int>("Notification_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Notification_id"));
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Notifcation_Count")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Notification_Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Notification_id");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Notifications");
+                });
+
             modelBuilder.Entity("PMS.Domain.Entities.Patient", b =>
                 {
                     b.Property<int>("PatientId")
@@ -495,6 +523,17 @@ namespace PMS.Api.Migrations
                     b.Navigation("Patient");
                 });
 
+            modelBuilder.Entity("PMS.Domain.Entities.Notification", b =>
+                {
+                    b.HasOne("PMS.Domain.Entities.Patient", "Patient")
+                        .WithMany("Notification")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("PMS.Domain.Entities.Receptionist", b =>
                 {
                     b.HasOne("PMS.Domain.Entities.Hospital", "Hospital")
@@ -552,6 +591,8 @@ namespace PMS.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("MedicalHistories");
+
+                    b.Navigation("Notification");
                 });
 #pragma warning restore 612, 618
         }

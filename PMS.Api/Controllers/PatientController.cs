@@ -25,6 +25,19 @@ namespace PMS.Api.Controllers
             _vitalSignService = vitalSignService;
         }
 
+        [HttpGet]
+        [Route("GetPatientById")]
+        public async Task<ActionResult<PatientDtl>> GetPatientById(int patientId)
+        {
+            var patientDetail = await _patientService.GetPatientById(patientId);
+            if (patientDetail == null)
+            {
+                return NotFound(); 
+            }
+
+            return Ok(patientDetail);
+        }
+
         [Authorize]
         [HttpGet]
         [Route("GetAllPatients")]
@@ -61,6 +74,18 @@ namespace PMS.Api.Controllers
                 return Ok(loginRes);
             }
             return response;
+        }
+        [HttpGet]
+        [Route("GetPatientById")]
+        public async Task<ActionResult<PatientDtl>> GetPatientById(int patientId)
+        {
+            var patientDetail = await _patientService.GetPatientById(patientId);
+            if (patientDetail == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(patientDetail);
         }
     }
 }
