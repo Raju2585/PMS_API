@@ -10,7 +10,6 @@ namespace PMS.Application.Repository_Interfaces
 {
     public interface IPatientRepository
     {
-        Task<PatientDtl> GetPatientById(int patientId);
         Task<List<Patient>> GetAllPatients();
         Task<bool> RegisterPatient(Patient patient);
         Task<bool> CheckIfPatientExisted(Patient patient);

@@ -21,6 +21,7 @@ namespace PMS.Infra
         DbSet<Hospital> Hospitals { get; set; }
 
         DbSet<Notification> Notifications { get; set; }
+        DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         int SaveChanges();
     }

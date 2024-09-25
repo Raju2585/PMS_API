@@ -75,17 +75,5 @@ namespace PMS.Api.Controllers
             }
             return response;
         }
-        [HttpGet]
-        [Route("GetPatientById")]
-        public async Task<ActionResult<PatientDtl>> GetPatientById(int patientId)
-        {
-            var patientDetail = await _patientService.GetPatientById(patientId);
-            if (patientDetail == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(patientDetail);
-        }
     }
 }
