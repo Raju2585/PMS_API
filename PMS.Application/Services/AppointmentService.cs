@@ -5,34 +5,146 @@ using PMS.Domain.Entities;
 using PMS.Domain.Entities.DTOs;
 using System.Net.Mail;
 using System.Net;
+using PMS.Domain.Entities.Response;
 
 namespace PMS.Application.Services
 {
     public class AppointmentService : IAppointmentService
     {
         private readonly IAppointmentRepository _appointmentRepository;
-       
+        private readonly IDoctorSlotsRepository _slotRepository;
+        private readonly IDoctorRepository _doctorRepository;
         private readonly IMapper _mapper;
-        public AppointmentService(IAppointmentRepository appointmentRepository,IMapper mapper)
+        public AppointmentService(
+            IAppointmentRepository appointmentRepository,
+            IMapper mapper, 
+            IDoctorRepository doctorRepository,
+            IDoctorSlotsRepository slotRepository)
         {
             _appointmentRepository = appointmentRepository;
             _mapper = mapper;
+            _doctorRepository = doctorRepository;
+            _slotRepository = slotRepository;
         }
 
-        public async Task<AppointmentDto> ScheduleAppointment(AppointmentDto appointmentDto)
+        public async Task<AppointmentRes> ScheduleAppointment(AppointmentDto appointmentDto)
         {
             if (appointmentDto == null)
                 throw new ArgumentNullException(nameof(appointmentDto));
 
             if (appointmentDto.AppointmentDate < DateTime.UtcNow)
                 throw new ArgumentException("Appointment date cannot be in the past.");
+            var doctor = await _doctorRepository.GetDoctorById(appointmentDto.DoctorId);
+            var response = "";
+            if (doctor.IsAvailable)
+            {
+                var date = DateOnly.FromDateTime(appointmentDto.AppointmentDate);
+                var time = appointmentDto.AppointmentDate.TimeOfDay;
+                var doctorSlots = await _slotRepository.GetDoctorSlotsByDate(doctor.DoctorId, date);
+                if (doctorSlots != null)
+                {
+                    switch (time)
+                    {
+                        case var t when t == new TimeSpan(10, 0, 0):
+                            if (!doctorSlots.Slot_1)
+                            {
+                                doctorSlots.Slot_1 = true;
+                            }
+                            break;
+
+                        case var t when t == new TimeSpan(11, 0, 0):
+                            if (!doctorSlots.Slot_2)
+                            {
+                                doctorSlots.Slot_2 = true;
+                            }
+                            break;
+
+                        case var t when t == new TimeSpan(14, 0, 0):
+                            if (!doctorSlots.Slot_3)
+                            {
+                                doctorSlots.Slot_3 = true;
+                            }
+                            break;
+
+                        case var t when t == new TimeSpan(15, 0, 0):
+                            if (!doctorSlots.Slot_4)
+                            {
+                                doctorSlots.Slot_4 = true;
+                            }
+                            break;
+
+                        case var t when t == new TimeSpan(16, 0, 0):
+                            if (!doctorSlots.Slot_5)
+                            {
+                                doctorSlots.Slot_5 = true;
+                            }
+                            break;
+
+                        default:
+                            response += "No slots are available";
+                            break;
+                    }
+                    if (response == "")
+                    {
+                        await _slotRepository.UpdateDoctorSlots(doctorSlots);
+                    }
+                    else
+                    {
+                        return new AppointmentRes { IsSuccess = false, Error = response };
+                    }
+                }
+                else
+                {
+                    var newDoctorSlots = new Doctor_Slots
+                    {
+                        DoctorId = appointmentDto.DoctorId,
+                        date = date
+                    };
+                    switch (time)
+                    {
+                        case var t when t == new TimeSpan(10, 0, 0):
+                            newDoctorSlots.Slot_1 = true;
+                            break;
+
+                        case var t when t == new TimeSpan(11, 0, 0):
+                            newDoctorSlots.Slot_2 = true;
+                            break;
+                        case var t when t == new TimeSpan(14, 0, 0):
+                            newDoctorSlots.Slot_3 = true;
+                            break;
+                        case var t when t == new TimeSpan(15, 0, 0):
+                            newDoctorSlots.Slot_4 = true;
+                            break;
+                        case var t when t == new TimeSpan(16, 0, 0):
+                            newDoctorSlots.Slot_5 = true;
+                            break;
+
+                        default:
+                            response += "No slots are available";
+                            break;
+                    }
+                    if (response == "")
+                    {
+                        await _slotRepository.AddDoctorSlots(newDoctorSlots);
+                    }
+                    else
+                    {
+                        return new AppointmentRes { IsSuccess = false, Error = response };
+                    }
+
+                }
+            }
+            else
+            {
+                return new AppointmentRes { IsSuccess = false, Error = "Doctor is not avalable" };
+            }
 
             var appointment = _mapper.Map<Appointment>(appointmentDto);
 
             var scheduledAppointment = await _appointmentRepository.ScheduleAppointment(appointment);
             var scheduledAppointmentDto = _mapper.Map<AppointmentDto>(scheduledAppointment);
 
-            return scheduledAppointmentDto;
+            return new AppointmentRes { IsSuccess = true };
         }
 
         public async Task<AppointmentDto> GetAppointment(int appointmentId)

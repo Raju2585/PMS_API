@@ -73,7 +73,7 @@ namespace PMS.Api.Controllers
             return Ok(updatedAppointment);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         [Route("GetAppointmentByPatientId/{patientId:int}")]
         public async Task<IActionResult> GetAppointmentsByPatientId(int patientId)

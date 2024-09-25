@@ -19,8 +19,8 @@ namespace PMS.Infra
         DbSet<VitalSign> VitalSigns { get; set; }
         DbSet<Receptionist> Receptionists { get; set; }
         DbSet<Hospital> Hospitals { get; set; }
-
         DbSet<Notification> Notifications { get; set; }
+        DbSet<Doctor_Slots> Doctor_Slots { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         int SaveChanges();
     }

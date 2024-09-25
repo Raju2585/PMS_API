@@ -1,11 +1,12 @@
 ﻿using PMS.Domain.Entities;
 using PMS.Domain.Entities.DTOs;
+using PMS.Domain.Entities.Response;
 
 namespace PMS.Application.Interfaces
 {
     public interface IAppointmentService
     {
-        Task<AppointmentDto> ScheduleAppointment(AppointmentDto appointmentDto);
+        Task<AppointmentRes> ScheduleAppointment(AppointmentDto appointmentDto);
         Task<AppointmentDto> GetAppointment(int appointmentId);
         Task<AppointmentDto> UpdateAppointment(int appointmentId, AppointmentDto appointment);
         Task<List<AppointmentDto>> GetAppointmentsByPatientId(int patientId);

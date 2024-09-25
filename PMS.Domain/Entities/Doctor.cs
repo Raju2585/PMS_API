@@ -12,6 +12,7 @@ namespace PMS.Domain.Entities
         public string Specialization { get; set; }
         public decimal ConsultationFee { get; set; }
         public bool IsAvailable { get; set; }=true;
+        //public int NoOfAppointments { get; set; } = 5;
         public int HospitalId { get; set; }
         public byte[]? Image {  get; set; }=null;
         //public int? AppointmentId { get; set; }=null ;
