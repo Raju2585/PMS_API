@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PMS.Infra;
 
@@ -11,9 +12,11 @@ using PMS.Infra;
 namespace PMS.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240923131154_AddedDoctorSlots")]
+    partial class AddedDoctorSlots
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,7 +209,8 @@ namespace PMS.Api.Migrations
 
                     b.HasKey("SlotId");
 
-                    b.HasIndex("DoctorId");
+                    b.HasIndex("DoctorId")
+                        .IsUnique();
 
                     b.ToTable("Doctor_Slots");
                 });
@@ -295,63 +299,6 @@ namespace PMS.Api.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("MedicalHistories");
-                });
-
-            modelBuilder.Entity("PMS.Domain.Entities.Notification", b =>
-                {
-                    b.Property<int>("Notification_id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Notification_id"));
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Notifcation_Count")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Notification_Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Notification_id");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("Notifications");
-                });
-
-            modelBuilder.Entity("PMS.Domain.Entities.PasswordResetToken", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Expiration")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("PasswordResetTokens");
                 });
 
             modelBuilder.Entity("PMS.Domain.Entities.Patient", b =>
@@ -533,8 +480,8 @@ namespace PMS.Api.Migrations
             modelBuilder.Entity("PMS.Domain.Entities.Doctor_Slots", b =>
                 {
                     b.HasOne("PMS.Domain.Entities.Doctor", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
+                        .WithOne()
+                        .HasForeignKey("PMS.Domain.Entities.Doctor_Slots", "DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -547,28 +494,6 @@ namespace PMS.Api.Migrations
                         .WithMany("MedicalHistories")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("PMS.Domain.Entities.Notification", b =>
-                {
-                    b.HasOne("PMS.Domain.Entities.Patient", "Patient")
-                        .WithMany("Notification")
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("PMS.Domain.Entities.PasswordResetToken", b =>
-                {
-                    b.HasOne("PMS.Domain.Entities.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Patient");
@@ -631,8 +556,6 @@ namespace PMS.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("MedicalHistories");
-
-                    b.Navigation("Notification");
                 });
 #pragma warning restore 612, 618
         }

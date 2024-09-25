@@ -25,7 +25,7 @@ namespace PMS.Infra
 
         public async Task<Doctor> GetDoctorById(int id)
         {
-            var doctorDetails = await _context.Doctors.FirstOrDefaultAsync(s => s.HospitalId == id);
+            var doctorDetails = await _context.Doctors.FirstOrDefaultAsync(s => s.DoctorId == id);
             return doctorDetails;
 
         }

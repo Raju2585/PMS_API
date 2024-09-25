@@ -8,6 +8,7 @@ using PMS.Domain.Entities;
 using PMS.Domain.NewFolder;
 using System;
 using System.Collections.Generic;
+using System.IO.Pipes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,12 +18,17 @@ namespace PMS.Application.Services
     public class DoctorService : IDoctorService
     {
         private readonly IDoctorRepository _doctorRepository;
+        private readonly IDoctorSlotsRepository _doctorSlotsRepository;
 
-        public DoctorService(IDoctorRepository doctorRepository, IConfiguration configuration, IMapper mapper)
+        public DoctorService(
+            IDoctorRepository doctorRepository,
+            IConfiguration configuration, 
+            IMapper mapper,
+            IDoctorSlotsRepository doctorSlotsRepository)
         {
 
             _doctorRepository = doctorRepository;
-
+            _doctorSlotsRepository = doctorSlotsRepository;
         }
         public async Task<List<Doctor>> GetAllDoctorsDTO()
         {
@@ -133,7 +139,20 @@ namespace PMS.Application.Services
 
             }
         }
-
+        public async Task<Doctor_Slots> GetDoctorSlotsByDate(int DoctorId, DateOnly date)
+        {
+            var existedSlots= await _doctorSlotsRepository.GetDoctorSlotsByDate(DoctorId,date);
+            if (existedSlots == null)
+            {
+                var newSlots = new Doctor_Slots
+                {
+                    DoctorId = DoctorId,
+                    date = date
+                };
+                return newSlots;
+            }
+            return existedSlots;
+        }
 
 
     }

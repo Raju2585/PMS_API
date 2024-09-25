@@ -24,7 +24,7 @@ namespace PMS.Infra
         public DbSet<Hospital> Hospitals { get; set; }
 
         public DbSet<Notification> Notifications { get; set; }
-        public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+        public DbSet<Doctor_Slots> Doctor_Slots { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure one-to-one relationship between Patient and Device
@@ -87,6 +87,12 @@ namespace PMS.Infra
                 .HasOne(s => s.Patient)
                 .WithMany(p => p.Notification)
                 .HasForeignKey(s => s.PatientId)
+                .OnDelete(DeleteBehavior.Cascade); 
+             
+            modelBuilder.Entity<Doctor_Slots>()
+                .HasOne(d=>d.Doctor)
+                .WithMany()
+                .HasForeignKey(s => s.DoctorId)
                 .OnDelete(DeleteBehavior.Cascade);
 
         }
