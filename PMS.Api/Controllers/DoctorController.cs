@@ -93,7 +93,21 @@ namespace PMS.Api.Controllers
                 }
 
             }
-
+        [HttpGet("GetDoctorSlotsByDate")]
+        public async Task<ActionResult<Doctor_Slots>> GetDoctorSlotsByDate(int DoctorId,DateTime date)
+        {
+            try
+            {
+                var dateOnly=DateOnly.FromDateTime(date);
+                return await _doctorService.GetDoctorSlotsByDate(DoctorId,dateOnly);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+
+    }
+
     }
   

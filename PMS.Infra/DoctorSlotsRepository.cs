@@ -16,9 +16,9 @@ namespace PMS.Infra
         {
             _applicationDbContext = applicationDbContext;
         }
-        public async Task<Doctor_Slots> GetDoctorSlotsByDate(DateOnly date)
+        public async Task<Doctor_Slots> GetDoctorSlotsByDate(int DoctorId, DateOnly date)
         {
-            var slots = await _applicationDbContext.Doctor_Slots.FirstOrDefaultAsync(s=>s.date==date);
+            var slots = await _applicationDbContext.Doctor_Slots.FirstOrDefaultAsync(s=>s.date==date && s.DoctorId==DoctorId);
             return slots;
         }
         public async Task<int> UpdateDoctorSlots(Doctor_Slots doctor_Slots)

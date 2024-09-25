@@ -9,7 +9,7 @@ namespace PMS.Application.Repository_Interfaces
 {
     public interface IDoctorSlotsRepository
     {
-        Task<Doctor_Slots> GetDoctorSlotsByDate(DateOnly date);
+        Task<Doctor_Slots> GetDoctorSlotsByDate(int DoctorId,DateOnly date);
         Task<int> UpdateDoctorSlots(Doctor_Slots doctor_Slots);
         Task<Doctor_Slots> AddDoctorSlots(Doctor_Slots doctor_Slots);
     }

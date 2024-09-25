@@ -83,8 +83,8 @@ namespace PMS.Infra
                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Doctor_Slots>()
                 .HasOne(d=>d.Doctor)
-                .WithOne()
-                .HasForeignKey<Doctor_Slots>(s=>s.DoctorId)
+                .WithMany()
+                .HasForeignKey(s => s.DoctorId)
                 .OnDelete(DeleteBehavior.Cascade);
 
         }
