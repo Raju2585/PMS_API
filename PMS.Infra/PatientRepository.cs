@@ -58,10 +58,6 @@ namespace PMS.Infra
             }
             return false;
         }
-        public async Task<Patient> GetPatientById(int patientId)
-        {
-            var patient = _applicationDbContext.Patients.FirstOrDefault(p => p.PatientId == patientId);
-            return patient;
-        }
+
     }
 }

@@ -15,6 +15,5 @@ namespace PMS.Application.Repository_Interfaces
         Task<bool> RegisterPatient(Patient patient);
         Task<bool> CheckIfPatientExisted(Patient patient);
         Task<Patient> GetPatientByEmail(string email);
-        Task<Patient> GetPatientById(int patientId);
     }
 }
