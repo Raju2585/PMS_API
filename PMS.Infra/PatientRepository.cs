@@ -20,7 +20,11 @@ namespace PMS.Infra
             _applicationDbContext = applicationDbContext;
             _mapper = mapper;
         }
-
+        public async Task<Patient> GetPatientById(int patientId)
+        {
+            var patient = _applicationDbContext.Patients.FirstOrDefault(p => p.PatientId == patientId);
+            return patient;
+        }
         public async Task<List<Patient>> GetAllPatients()
         {
             return await _applicationDbContext.Patients.ToListAsync();
