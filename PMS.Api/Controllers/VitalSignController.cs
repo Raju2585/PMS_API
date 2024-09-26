@@ -19,9 +19,9 @@ namespace PMS.Api.Controllers
 
         [HttpGet]
         [Route("GetVitalSigns")]
-        public async Task<ActionResult<IEnumerable<VitalSign>>> GetVitalSignByPatient(int patientId)
+        public async Task<ActionResult<IEnumerable<VitalSign>>> GetVitalSignByDeviceId(int deviceid)
         {
-            var vitalSigns = await _vitalservice.GetVitalSignByPatient(patientId);
+            var vitalSigns = await _vitalservice.GetVitalSignByDeviceId(deviceid);
 
             if (vitalSigns == null )
             {

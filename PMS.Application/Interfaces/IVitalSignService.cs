@@ -10,6 +10,6 @@ namespace PMS.Application.Interfaces
     public interface IVitalSignService
     {
         Task<VitalSign> CreateVitalSign(int deviceId);
-        Task<VitalSign> GetVitalSignByPatient(int patientid);
+        Task<VitalSign> GetVitalSignByDeviceId(int deviceid);
     }
 }
