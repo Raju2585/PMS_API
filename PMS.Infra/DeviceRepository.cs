@@ -1,4 +1,5 @@
-﻿using PMS.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PMS.Application.Interfaces;
 using PMS.Application.Repository_Interfaces;
 using PMS.Domain.Entities;
 using System;
@@ -17,18 +18,22 @@ namespace PMS.Infra
         {
             _applicationDbContext = applicationDbContext;
         }
-        public async Task<Device> CreateDevice(Patient patient)
+        public async Task<Device> CreateDevice(int patientId, string email, string password)
         {
             var device = new Device
             {
-                DeviceName = patient.DeviceName,
-                PatientId = patient.PatientId,
-                Patient = patient
+                PatientId = patientId,
+                Email = email,
+                Password = password
             };
             
             await _applicationDbContext.Devices.AddAsync(device);
             await _applicationDbContext.SaveChangesAsync();
             return device;
+        }
+        public async Task<Device> GetDeviceByEmail(string email)
+        {
+            return await _applicationDbContext.Devices.FirstOrDefaultAsync(d=>d.Email==email);
         }
     }
 }

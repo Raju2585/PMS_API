@@ -9,6 +9,7 @@ namespace PMS.Application.Repository_Interfaces
 {
     public interface IDeviceRepository
     {
-        Task<Device> CreateDevice(Patient patient);
+        Task<Device> CreateDevice(int patientId, string email, string password);
+        Task<Device> GetDeviceByEmail(string email);
     }
 }

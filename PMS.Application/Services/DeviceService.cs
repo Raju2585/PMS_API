@@ -1,6 +1,8 @@
 ﻿using PMS.Application.Interfaces;
 using PMS.Application.Repository_Interfaces;
 using PMS.Domain.Entities;
+using PMS.Domain.Entities.Request;
+using PMS.Domain.Entities.Response;
 using System.Linq;
 
 namespace PMS.Application.Services
@@ -14,17 +16,50 @@ namespace PMS.Application.Services
             _deviceRepository = deviceRepository;
             _patientRepository = patientRepository;
         } 
-        public async Task<Device> CreateDevice(string patientEmail)
+        public async Task<Device> CreateDevice(int patientId,string email,string password)
         {
-            var patientList=await _patientRepository.GetAllPatients();
-            var patient=patientList.FirstOrDefault(p=>p.PatientEmail==patientEmail);
-            if (patient!=null)
+            var device= await _deviceRepository.CreateDevice(patientId, email, password);
+            return device;
+        }
+        public async Task<Device> GetDeviceByEmail(string email)
+        {
+            try
             {
-                var device= await _deviceRepository.CreateDevice(patient);
-                patient.Device=device;
-                return device;
+                var devices = await _deviceRepository.GetDeviceByEmail(email);
+                return devices;
             }
-            return new Device();
+            catch (Exception ex)
+            {
+                return null;
+            }
+             
+        }
+        public async Task<DeviceRes> AddDevice(DeviceReq deviceReq)
+        {
+            var device= await GetDeviceByEmail(deviceReq.Email);
+            var deviceRes=new DeviceRes();  
+            if(device!=null)
+            {
+                if(device.Password==deviceReq.Password)
+                {
+                    deviceRes.Device=device;
+                    deviceRes.IsSuccess=true;
+                    deviceRes.IsDeviceExisted=true;
+                    return deviceRes;
+                }
+                else
+                {
+                    deviceRes.IsSuccess = false;
+                    deviceRes.Error = "Invalid credentials";
+                    return deviceRes;
+                }
+            }
+
+            var result = await CreateDevice(deviceReq.PatientId, deviceReq.Email, deviceReq.Password);
+            deviceRes.Device = result;
+            deviceRes.IsSuccess=true ;
+            return deviceRes;
+
         }
     }
 }
