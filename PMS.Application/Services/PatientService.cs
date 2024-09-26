@@ -29,20 +29,18 @@ namespace PMS.Application.Services
             _config = configuration;
             _mapper = mapper;
         }
-
         public async Task<PatientDtl> GetPatientById(int patientId)
         {
             try
             {
                 var patient = await _repository.GetPatientById(patientId);
-                return patient;
+                return _mapper.Map<PatientDtl>(patient);
             }
             catch (Exception ex)
-            {               
-                return null; 
+            {
+                return null;
             }
         }
-
         public async Task<List<PatientDtl>> GetAllPatientDtls()
         {
             List<PatientDtl> PatientResList = null;

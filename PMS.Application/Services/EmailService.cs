@@ -59,6 +59,46 @@ namespace PMS.Application.Services
 
         }
 
+        public async Task SendForgetPasswordEmail(string toEmail, string resetLink)
+        {
+            string subject = "Password Reset Request";
+            string body = await GenerateForgetPasswordEmailBody(resetLink);
+
+            using (SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587))
+            {
+                smtpClient.EnableSsl = true;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential("pavanimaddu07@gmail.com", GetPassword());
+
+                using (MailMessage mailMessage = new MailMessage())
+                {
+                    mailMessage.From = new MailAddress("pavanimaddu07@gmail.com");
+                    mailMessage.To.Add(toEmail);
+                    mailMessage.Subject = subject;
+                    mailMessage.Body = body;
+                    mailMessage.IsBodyHtml = true;
+
+                    await smtpClient.SendMailAsync(mailMessage);
+                }
+            }
+        }
+
+        public async Task<string> GenerateForgetPasswordEmailBody(string resetLink)
+        {
+            var emailBody = $@"
+            <html>
+            <body>
+                <h2>Password Reset Request</h2>
+                <p>We received a request to reset your password. You can reset it using the link below:</p>
+                <p><a href='{resetLink}'>Reset Password</a></p>
+                <p>If you didn't request a password reset, you can ignore this email.</p>
+                <p>Best regards,<br/>Your Hospital Team</p>
+            </body>
+            </html>";
+
+            return emailBody;
+        }
+
         private string GetPassword()
         {
             return "xvacuzdxgonhvvwq";

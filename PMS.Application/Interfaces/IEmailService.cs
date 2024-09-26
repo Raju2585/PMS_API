@@ -11,5 +11,7 @@ namespace PMS.Application.Interfaces
     {
         Task<String> GenerateEmailBody(Domain.Entities.Response.PatientDtl patient, Appointment appointment, Doctor doctor);
         void SendEmailNotification(string toEmail, string subject, string body);
+        Task SendForgetPasswordEmail(string toEmail, string resetLink);
+        Task<string> GenerateForgetPasswordEmailBody(string resetLink);
     }
 }

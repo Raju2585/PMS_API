@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PMS.Infra;
 
@@ -11,9 +12,11 @@ using PMS.Infra;
 namespace PMS.Api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240925073002_addPasswordResetToken")]
+    partial class addPasswordResetToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,11 +120,7 @@ namespace PMS.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeviceId"));
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
+                    b.Property<string>("DeviceName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -177,42 +176,6 @@ namespace PMS.Api.Migrations
                     b.HasIndex("HospitalId");
 
                     b.ToTable("Doctors");
-                });
-
-            modelBuilder.Entity("PMS.Domain.Entities.Doctor_Slots", b =>
-                {
-                    b.Property<int>("SlotId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SlotId"));
-
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Slot_1")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Slot_2")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Slot_3")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Slot_4")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Slot_5")
-                        .HasColumnType("bit");
-
-                    b.Property<DateOnly>("date")
-                        .HasColumnType("date");
-
-                    b.HasKey("SlotId");
-
-                    b.HasIndex("DoctorId");
-
-                    b.ToTable("Doctor_Slots");
                 });
 
             modelBuilder.Entity("PMS.Domain.Entities.Hospital", b =>
@@ -376,6 +339,10 @@ namespace PMS.Api.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DeviceName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -528,17 +495,6 @@ namespace PMS.Api.Migrations
                         .IsRequired();
 
                     b.Navigation("Hospital");
-                });
-
-            modelBuilder.Entity("PMS.Domain.Entities.Doctor_Slots", b =>
-                {
-                    b.HasOne("PMS.Domain.Entities.Doctor", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("PMS.Domain.Entities.MedicalHistory", b =>
