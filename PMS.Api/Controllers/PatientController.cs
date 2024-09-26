@@ -12,17 +12,11 @@ namespace PMS.Api.Controllers
     public class PatientController : Controller
     {
         public readonly IPatientService _patientService;
-        private readonly IDeviceService _deviceService;
-        private readonly IVitalSignService _vitalSignService;
         public PatientController(
-            IPatientService patientService,
-            IDeviceService deviceService,
-            IVitalSignService vitalSignService
+            IPatientService patientService
             )
         {
             _patientService = patientService;
-            _deviceService = deviceService;
-            _vitalSignService = vitalSignService;
         }
 
         [HttpGet]
@@ -53,9 +47,6 @@ namespace PMS.Api.Controllers
             var PatientRes = await _patientService.RegisterPatient(patientReq);
             if (PatientRes.IsSuccess)
             {
-                var device = await _deviceService.CreateDevice(PatientRes.PatientEmail);
-                var vitalSign = await _vitalSignService.CreateVitalSign(device.DeviceId);
-                device.VitalSign = vitalSign;
                 return Ok(PatientRes);
             }
 
@@ -75,5 +66,6 @@ namespace PMS.Api.Controllers
             }
             return response;
         }
+
     }
 }

@@ -6,8 +6,9 @@ namespace PMS.Domain.Entities
     {
         [Key]
         public int DeviceId { get; set; }
-        public string DeviceName { get; set; }
         public int PatientId { get; set; }  
+        public string Email { get; set; }
+        public string Password { get; set; }
 
         // Navigation property
         public virtual Patient Patient { get; set; }
