@@ -30,6 +30,19 @@ namespace PMS.Api.Controllers
 
             return Ok(vitalSigns);
         }
+        [HttpGet]
+        [Route("GetVitalSignsByPatientId")]
+        public async Task<ActionResult<IEnumerable<VitalSign>>> GetVitalSignByPatient(int patientId)
+        {
+            var vitalSigns = await _vitalservice.GetVitalSignByPatient(patientId);
+
+            if (vitalSigns == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(vitalSigns);
+        }
 
 
     }
