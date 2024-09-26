@@ -24,7 +24,7 @@ namespace PMS.Infra
             return vitalSign;
         }
 
-        /*public async Task<VitalSign> GetVitalSignByPatient(int patientId)
+        public async Task<VitalSign> GetVitalSignByPatientId(int patientId)
         {
             // Retrieve DeviceIds for the given patientId
             var deviceIds = await _applicationDbContext.Devices
@@ -32,15 +32,15 @@ namespace PMS.Infra
                 .Select(d => d.DeviceId)
                 .ToListAsync();
 
-            
+
 
             // Retrieve the first VitalSign associated with any of the retrieved DeviceIds
             var vitalSign = await _applicationDbContext.VitalSigns
                 .Where(v => deviceIds.Contains(v.DeviceId))
-                .FirstOrDefaultAsync(); 
+                .FirstOrDefaultAsync();
 
             return vitalSign;
-        }*/
+        }
         public async Task<VitalSign> GetVitalSignByDeviceId(int deviceId)
         {
 
