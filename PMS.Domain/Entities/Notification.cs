@@ -14,7 +14,7 @@ namespace PMS.Domain.Entities
         public string Notification_Message { get; set; }
         public int Notifcation_Count { get; set; }
         public bool IsRead { get; set; } = false;
-        public int PatientId { get; set; }
+        public string Id { get; set; }
         public virtual Patient Patient { get; set; }
     }
 }

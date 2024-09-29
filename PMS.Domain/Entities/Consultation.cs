@@ -6,7 +6,7 @@ namespace PMS.Domain.Entities
     {
         [Key]
         public int ConsultationId { get; set; }
-        public int PatientId { get; set; }
+        public string Id { get; set; }
         public int DoctorId { get; set; }
         public DateTime ConsultationDate { get; set; }
 

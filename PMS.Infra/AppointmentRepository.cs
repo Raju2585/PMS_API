@@ -31,7 +31,7 @@ namespace PMS.Infra
             if (existingAppointment == null)
                 return null;
 
-            existingAppointment.PatientId = updatedAppointment.PatientId;
+            existingAppointment.Id = updatedAppointment.Id;
             existingAppointment.DoctorId = updatedAppointment.DoctorId;
             existingAppointment.AppointmentDate = updatedAppointment.AppointmentDate;
             existingAppointment.StatusId = updatedAppointment.StatusId;
@@ -45,15 +45,15 @@ namespace PMS.Infra
             return existingAppointment;
         }
 
-        public async Task<List<AppointmentDto>> GetAppointmentsByPatientId(int patientId)
+        public async Task<List<AppointmentDto>> GetAppointmentsByPatientId(string patientId)
         {
             return await _applicationContext.Appointments
-                .Where(a => a.PatientId == patientId)
+                .Where(a => a.Id == patientId)
                 .Include(a => a.Doctor)
                 .Select(a => new AppointmentDto
                 {
                     AppointmentId = a.AppointmentId,
-                    PatientId = a.PatientId,
+                    Id = a.Id,
                     DoctorId = a.DoctorId,
                     AppointmentDate = a.AppointmentDate,
                     StatusId = a.StatusId,
@@ -96,7 +96,7 @@ namespace PMS.Infra
                 .Select(a => new AppointmentDto
                 {
                     AppointmentId = a.AppointmentId,
-                    PatientId = a.PatientId,
+                    Id = a.Id,
                     DoctorId = a.DoctorId,
                     PatientName=a.Patientname,
                     AppointmentDate = a.AppointmentDate,

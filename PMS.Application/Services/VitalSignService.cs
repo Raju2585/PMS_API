@@ -41,7 +41,7 @@ namespace PMS.Application.Services
             return vitalsigns;
             
         }
-        public async Task<VitalSign> GetVitalSignByPatient(int patientId)
+        public async Task<VitalSign> GetVitalSignByPatient(string patientId)
         {
             var vitalsigns=await _vitalSignRepository.GetVitalSignByPatientId(patientId);
             return vitalsigns;

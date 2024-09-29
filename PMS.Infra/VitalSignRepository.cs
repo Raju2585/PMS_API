@@ -24,11 +24,11 @@ namespace PMS.Infra
             return vitalSign;
         }
 
-        public async Task<VitalSign> GetVitalSignByPatientId(int patientId)
+        public async Task<VitalSign> GetVitalSignByPatientId(string patientId)
         {
             // Retrieve DeviceIds for the given patientId
             var deviceIds = await _applicationDbContext.Devices
-                .Where(d => d.PatientId == patientId)
+                .Where(d => d.Id == patientId)
                 .Select(d => d.DeviceId)
                 .ToListAsync();
 

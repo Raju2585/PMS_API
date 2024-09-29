@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PMS.Application.Interfaces;
 using PMS.Domain.Entities;
@@ -15,6 +16,7 @@ namespace PMS.Api.Controllers
         {
             _notificationService = notificationService;
         }
+        [Authorize(Roles = "PATIENT")]
         [HttpGet]
         [Route("Notifications")]
         public async Task<ActionResult<Notification>> GetAllNotifications()
@@ -29,6 +31,7 @@ namespace PMS.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [Authorize(Roles = "PATIENT")]
         [HttpPut("{id}/mark-as-read")]
         public async Task<IActionResult> MarkAsRead(int id)
         {
@@ -40,12 +43,14 @@ namespace PMS.Api.Controllers
 
             return NoContent(); 
         }
+        [Authorize(Roles = "PATIENT")]
         [HttpDelete("clear")]
         public async Task<IActionResult> ClearNotifications()
         {
             await _notificationService.ClearNotifications();
             return NoContent(); 
         }
+        [Authorize(Roles = "PATIENT")]
         [HttpPost("appointment")]
         public async Task<IActionResult> CreateNotificationForAppointment([FromBody] Appointment appointment)
         {

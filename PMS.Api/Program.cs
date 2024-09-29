@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using PMS.Application.Interfaces;
@@ -8,6 +9,8 @@ using PMS.Application.Services;
 using PMS.Domain;
 using PMS.Infra;
 using System.Text;
+using PMS.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,8 +25,11 @@ builder.Services.AddDbContext<IApplicationDbContext,ApplicationDbContext>(option
 options.UseSqlServer(builder.Configuration.GetConnectionString("ApplicationDb"),
 b=>b.MigrationsAssembly("PMS.Api")
 ));
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
-builder.Services.AddScoped<IPatientService,PatientService>();
+//builder.Services.AddScoped<IPatientService,PatientService>();
 builder.Services.AddScoped<IPatientRepository,PatientRepository>();
 builder.Services.AddScoped<IDeviceService,DeviceService>();
 builder.Services.AddScoped<IDeviceRepository,DeviceRepository>();
@@ -37,26 +43,32 @@ builder.Services.AddScoped<IHospitalService, HospitalService>();
 builder.Services.AddScoped<IHospitalRepository, HospitalRepository>();
 builder.Services.AddScoped<IAppointmentService,AppointmentService>();
 builder.Services.AddScoped<IAppointmentRepository,AppointmentRepository>();
-builder.Services.AddScoped<IReceptionistService,ReceptionistService>();
+//builder.Services.AddScoped<IReceptionistService,ReceptionistService>();
 builder.Services.AddScoped<IReceptionistRepository,ReceptionistRepository>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IDoctorSlotsRepository,DoctorSlotsRepository>();
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-        };
-    });
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+    };
+});
 
 builder.Services.AddCors(options =>
 {

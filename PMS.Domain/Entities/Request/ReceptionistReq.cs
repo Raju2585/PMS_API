@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace PMS.Domain.Entities.Request
 {
-    public class DeviceReq
+    public class ReceptionistReq
     {
-        public string PatientId { get; set; }
         public string Email { get; set; }
+        public string ReceptionistName { get; set; }
+        public int HospitalId { get; set; }
         public string Password { get; set; }
     }
 }

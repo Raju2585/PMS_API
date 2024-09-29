@@ -18,11 +18,11 @@ namespace PMS.Infra
         {
             _applicationDbContext = applicationDbContext;
         }
-        public async Task<Device> CreateDevice(int patientId, string email, string password)
+        public async Task<Device> CreateDevice(string patientId, string email, string password)
         {
             var device = new Device
             {
-                PatientId = patientId,
+                Id = patientId,
                 Email = email,
                 Password = password
             };

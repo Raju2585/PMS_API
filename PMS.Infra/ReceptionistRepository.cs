@@ -17,22 +17,21 @@ namespace PMS.Infra
         {
             _context = context;
         }
-        public async Task<ReceptionistDtl> GetReceptionistByEmail(string email)
+        /*public async Task<ReceptionistDtl> GetReceptionistByEmail(string email)
         {
             var receptionist = await _context.Receptionists
                 .Where(r => r.Email == email)
                 .Include(d => d.Hospital)
                 .Select(a => new ReceptionistDtl
                 {
-                    ReceptionistId = a.ReceptionistId,
+                    ReceptionistId = a.Id,
                     Email = a.Email,
                     HospitalId = a.HospitalId,
-                    Password=a.Password,
                     ReceptionistName=a.ReceptionistName,
                     HospitalName = a.Hospital.HospitalName
                 }).FirstOrDefaultAsync();
                 
             return receptionist;
-        }
+        }*/
     }
 }

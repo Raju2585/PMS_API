@@ -11,13 +11,14 @@ namespace PMS.Infra
     public interface IApplicationDbContext
     {
         DbSet<Patient> Patients { get; set; }
+        DbSet<Receptionist> Receptionists { get; set; }
         DbSet<Appointment> Appointments { get; set; }
         DbSet<Consultation> Consultations { get; set; }
         DbSet<Doctor> Doctors { get; set; }
         DbSet<MedicalHistory> MedicalHistories { get; set; }
         DbSet<Device> Devices { get; set; }
         DbSet<VitalSign> VitalSigns { get; set; }
-        DbSet<Receptionist> Receptionists { get; set; }
+
         DbSet<Hospital> Hospitals { get; set; }
         DbSet<Notification> Notifications { get; set; }
         DbSet<Doctor_Slots> Doctor_Slots { get; set; }

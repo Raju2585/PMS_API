@@ -16,7 +16,7 @@ namespace PMS.Application.Services
             _deviceRepository = deviceRepository;
             _patientRepository = patientRepository;
         } 
-        public async Task<Device> CreateDevice(int patientId,string email,string password)
+        public async Task<Device> CreateDevice(string patientId,string email,string password)
         {
             var device= await _deviceRepository.CreateDevice(patientId, email, password);
             return device;

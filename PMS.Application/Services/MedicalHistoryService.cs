@@ -39,7 +39,7 @@ namespace PMS.Application.Services
 
 
 
-        public async Task<List<MedicalHistoryDTOs>> GetMedicalHistoryByPatient(int patientId)
+        public async Task<List<MedicalHistoryDTOs>> GetMedicalHistoryByPatient(string patientId)
         {
             // Retrieve the list of domain models from the repository
             var medicalHistories = await _medicalHistoryRepository.GetMedicalHistoryByPatient(patientId);

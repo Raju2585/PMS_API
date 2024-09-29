@@ -11,6 +11,6 @@ namespace PMS.Application.Repository_Interfaces
     {
         Task<VitalSign> CreateVitalSign(VitalSign vitalSign);
         Task<VitalSign> GetVitalSignByDeviceId(int deviceid);
-        Task<VitalSign> GetVitalSignByPatientId(int patientId);
+        Task<VitalSign> GetVitalSignByPatientId(string patientId);
     }
 }

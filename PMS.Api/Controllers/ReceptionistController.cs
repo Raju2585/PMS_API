@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿/*using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PMS.Application.Interfaces;
 using PMS.Application.Services;
@@ -30,3 +30,4 @@ namespace PMS.Api.Controllers
         }
     }
 }
+*/

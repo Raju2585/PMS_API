@@ -12,6 +12,6 @@ namespace PMS.Application.Interfaces
     {
         Task<MedicalHistoryDTOs> AddMedicalHistory(MedicalHistoryDTOs medicalHistorydto);
         
-        Task<List<MedicalHistoryDTOs>> GetMedicalHistoryByPatient(int patientId);
+        Task<List<MedicalHistoryDTOs>> GetMedicalHistoryByPatient(string patientId);
     }
 }

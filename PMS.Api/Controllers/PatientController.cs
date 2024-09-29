@@ -18,54 +18,21 @@ namespace PMS.Api.Controllers
         {
             _patientService = patientService;
         }
-
+        [Authorize(Roles = "PATIENT")]
         [HttpGet]
         [Route("GetPatientById")]
-        public async Task<ActionResult<PatientDtl>> GetPatientById(int patientId)
+        public async Task<ActionResult<PatientDtl>> GetPatientById(string patientId)
         {
             var patientDetail = await _patientService.GetPatientById(patientId);
             if (patientDetail == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
 
             return Ok(patientDetail);
         }
 
-        [Authorize]
-        [HttpGet]
-        [Route("GetAllPatients")]
-        public async Task<ActionResult<List<Patient>>> GetPatients()
-        {
-            var patients= await _patientService.GetAllPatientDtls();
-            return Ok(patients);
-        }
-        [HttpPost]
-        [Route("Register")]
-        public async Task<IActionResult> Register(PatientReq patientReq)
-        {
-            var PatientRes = await _patientService.RegisterPatient(patientReq);
-            if (PatientRes.IsSuccess)
-            {
-                return Ok(PatientRes);
-            }
-
-            return Ok(PatientRes);
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        [Route("Login")]
-        public async Task<IActionResult> Login(LoginReq patient)
-        {
-            IActionResult response = Unauthorized();
-            var loginRes = await _patientService.Login(patient);
-            if (loginRes != null)
-            {
-                return Ok(loginRes);
-            }
-            return response;
-        }
+       
 
     }
 }

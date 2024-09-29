@@ -10,8 +10,8 @@ namespace PMS.Application.Interfaces
 {
     public interface ILoginService<T>
     {
-        Task<LoginRes<T>> AuthenticateUser(LoginReq loginRequest);
-        Task<string> GenerateToken();
+        //Task<LoginRes<T>> AuthenticateUser(LoginReq loginRequest);
+        //Task<string> GenerateToken();
         //Task<LoginRes<T>> Login(LoginReq loginRequest);
     }
 }

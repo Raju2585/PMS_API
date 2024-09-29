@@ -38,11 +38,11 @@ namespace PMS.Infra
 
        
 
-        public async Task<List<MedicalHistory>> GetMedicalHistoryByPatient(int patientId)
+        public async Task<List<MedicalHistory>> GetMedicalHistoryByPatient(string patientId)
         { 
 
             return await _applicationDbContext.MedicalHistories
-                .Where(m => m.PatientId == patientId)
+                .Where(m => m.Id == patientId)
                 .ToListAsync();
         }
 

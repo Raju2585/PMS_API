@@ -8,14 +8,11 @@ using System.Threading.Tasks;
 
 namespace PMS.Domain.Entities
 {
-    public class Patient
+    public class Patient:ApplicationUser
     {
-        [Key]
-        public int PatientId { get; set; }
+
         public string PatientName { get; set; }
-        public string PatientEmail { get; set; }
         public string ContactNumber { get; set; }
-        public string Password { get; set; }
         public int Age { get; set; }
         public string Gender { get; set; }
         public DateTime Date { get; set; }

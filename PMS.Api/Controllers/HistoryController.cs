@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PMS.Application.Interfaces;
 using PMS.Application.Services;
@@ -18,7 +19,7 @@ namespace PMS.Api.Controllers
         {
             _medicalhistoryService = medicalhistoryService;
         }
-
+        [Authorize(Roles = "PATIENT")]
         [HttpPost]
         [Route("AddMedicalhistory")]
         public async Task<IActionResult> AddMedicalHistory([FromBody] MedicalHistoryDTOs medicalHistorydto)
@@ -26,10 +27,10 @@ namespace PMS.Api.Controllers
             var MedicalHistoryAdded = await _medicalhistoryService.AddMedicalHistory(medicalHistorydto);
             return Ok(MedicalHistoryAdded);
         }
-
-        [HttpGet]
+        [Authorize(Roles = "PATIENT")]
+        [HttpGet] 
         [Route("GetMedicalhistory/{id:int}")]
-        public async Task<ActionResult<List<MedicalHistoryDTOs>>> GetMedicalHistoryByPatient(int patientId)
+        public async Task<ActionResult<List<MedicalHistoryDTOs>>> GetMedicalHistoryByPatient(string patientId)
         {
             var medicalHistories = await _medicalhistoryService.GetMedicalHistoryByPatient(patientId);
             return Ok(medicalHistories);

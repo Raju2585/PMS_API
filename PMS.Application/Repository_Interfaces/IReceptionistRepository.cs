@@ -10,6 +10,6 @@ namespace PMS.Application.Repository_Interfaces
 {
     public interface IReceptionistRepository
     {
-        public Task<ReceptionistDtl> GetReceptionistByEmail(string email);
+        //public Task<ReceptionistDtl> GetReceptionistByEmail(string email);
     }
 }

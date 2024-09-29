@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PMS.Application.Interfaces;
 using PMS.Domain.Entities.Request;
 using PMS.Domain.Entities.Response;
@@ -17,7 +18,7 @@ namespace PMS.Api.Controllers
             _deviceService = deviceService;
             _vitalSignService = vitalSignService;
         }
-
+        [Authorize(Roles = "PATIENT")]
         [HttpPost("AddDevice")]
         public async Task<ActionResult> AddDevice(DeviceReq deviceReq)
         {

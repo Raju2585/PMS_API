@@ -189,9 +189,9 @@ namespace PMS.Application.Services
         }
 
 
-        public async Task<List<AppointmentDto>> GetAppointmentsByPatientId(int patientId)
+        public async Task<List<AppointmentDto>> GetAppointmentsByPatientId(string patientId)
         {
-            if (patientId <= 0)
+            if (patientId.Length <= 0)
             {
                 throw new ArgumentException("Invalid patient ID.", nameof(patientId));
             }

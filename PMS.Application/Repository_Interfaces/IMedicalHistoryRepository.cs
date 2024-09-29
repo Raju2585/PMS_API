@@ -10,7 +10,7 @@ namespace PMS.Application.Repository_Interfaces
     public interface IMedicalHistoryRepository
     {
         Task<MedicalHistory> AddMedicalHistory(MedicalHistory medicalHistory);
-        Task<List<MedicalHistory>> GetMedicalHistoryByPatient(int patientId);
+        Task<List<MedicalHistory>> GetMedicalHistoryByPatient(string patientId);
 
     }
 }

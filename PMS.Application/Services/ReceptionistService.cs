@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿/*using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using PMS.Application.Interfaces;
@@ -27,7 +27,7 @@ namespace PMS.Application.Services
             _config=config;
             _mappers = mappers;
         }
-        public async Task<ReceptionistDtl> GetReceptionistByEmail(string email)
+        *//*public async Task<ReceptionistDtl> GetReceptionistByEmail(string email)
         {
             try
             {
@@ -42,8 +42,8 @@ namespace PMS.Application.Services
                 return null;
             }
             return null;
-        }
-        public async Task<LoginRes<ReceptionistDtl>> AuthenticateUser(LoginReq user)
+        }*/
+        /*public async Task<LoginRes<ReceptionistDtl>> AuthenticateUser(LoginReq user)
         {
             var LoginRes = new LoginRes<ReceptionistDtl>();
             try
@@ -62,7 +62,7 @@ namespace PMS.Application.Services
 
             return LoginRes;
 
-        }
+        }*//*
         public async Task<string> GenerateToken()
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -93,3 +93,4 @@ namespace PMS.Application.Services
         }
     }
 }
+*/

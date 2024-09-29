@@ -11,7 +11,7 @@ namespace PMS.Application.Interfaces
 {
     public interface IDeviceService
     {
-        Task<Device> CreateDevice(int patientId, string email, string password);
+        Task<Device> CreateDevice(string patientId, string email, string password);
         Task<DeviceRes> AddDevice(DeviceReq deviceReq);
     }
 }

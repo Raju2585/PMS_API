@@ -1,4 +1,4 @@
-﻿using PMS.Domain.Entities;
+﻿/*using PMS.Domain.Entities;
 using PMS.Domain.Entities.DTOs;
 using PMS.Domain.Entities.Request;
 using PMS.Domain.Entities.Response;
@@ -12,7 +12,8 @@ namespace PMS.Application.Interfaces
 {
     public interface IReceptionistService
     {
-        public Task<ReceptionistDtl> GetReceptionistByEmail(string email);
-        Task<LoginRes<ReceptionistDtl>> Login(LoginReq patient);
+        //public Task<ReceptionistDtl> GetReceptionistByEmail(string email);
+        //Task<LoginRes<ReceptionistDtl>> Login(LoginReq patient);
     }
 }
+*/

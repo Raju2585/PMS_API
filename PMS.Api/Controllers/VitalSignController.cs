@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PMS.Application.Interfaces;
 using PMS.Application.Services;
@@ -16,7 +17,7 @@ namespace PMS.Api.Controllers
         {
             _vitalservice = vitalservice;
         }
-
+        [Authorize(Roles = "PATIENT")]
         [HttpGet]
         [Route("GetVitalSigns")]
         public async Task<ActionResult<IEnumerable<VitalSign>>> GetVitalSignByDeviceId(int deviceid)
@@ -30,9 +31,10 @@ namespace PMS.Api.Controllers
 
             return Ok(vitalSigns);
         }
+        [Authorize(Roles = "PATIENT")]
         [HttpGet]
         [Route("GetVitalSignsByPatientId")]
-        public async Task<ActionResult<IEnumerable<VitalSign>>> GetVitalSignByPatient(int patientId)
+        public async Task<ActionResult<IEnumerable<VitalSign>>> GetVitalSignByPatient(string patientId)
         {
             var vitalSigns = await _vitalservice.GetVitalSignByPatient(patientId);
 

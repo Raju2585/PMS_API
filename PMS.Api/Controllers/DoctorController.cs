@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PMS.Application.Interfaces;
 using PMS.Domain.Entities;
@@ -18,6 +19,7 @@ namespace PMS.Api.Controllers
         {
             _doctorService = doctorService;
         }
+        [Authorize(Roles = "PATIENT")]
         [HttpGet]
         [Route("Get/All/Doctors")]
         public async Task<ActionResult<List<Doctor>>> GetAllDoctors()
@@ -32,6 +34,7 @@ namespace PMS.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [Authorize(Roles = "PATIENT")]
         [HttpGet]
         [Route("Get/DoctorById/{id}")]
         public async Task<ActionResult<Doctor>> GetDoctorDTOAsync(int id)
@@ -48,6 +51,7 @@ namespace PMS.Api.Controllers
             }
 
         }
+        [Authorize(Roles = "PATIENT")]
         [HttpGet]
         [Route("Get/Doctor/{specailist}")]
         public async Task<ActionResult<Doctor>> GetDoctorBySpecialist(string specailist)
@@ -62,7 +66,7 @@ namespace PMS.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        [Authorize(Roles = "PATIENT")]
         [HttpGet]
         [Route("Get/Doctor/HospitalId/{hospitalId}")]
         public async Task<ActionResult<Doctor>> GetDoctorsByHospitals(int hospitalId)
@@ -81,18 +85,19 @@ namespace PMS.Api.Controllers
         [HttpPost]
         [Route("Add/Doctors")]
         public async Task<ActionResult<Doctor>> AddDoctors([FromForm] string Doctorname, string email, string specialization, string contact, decimal consultationFee, bool isAvailable, int hospitalId, IFormFile? file) 
+        {
+            try
             {
-                try
-                {
-                    var doctors = await _doctorService.AddDoctors(Doctorname, email, specialization, contact, consultationFee, isAvailable, hospitalId, file); ;
-                    return Ok(doctors);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest(ex.Message);
-                }
-
+                var doctors = await _doctorService.AddDoctors(Doctorname, email, specialization, contact, consultationFee, isAvailable, hospitalId, file); ;
+                return Ok(doctors);
             }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+        [Authorize(Roles = "PATIENT")]
         [HttpGet("GetDoctorSlotsByDate")]
         public async Task<ActionResult<Doctor_Slots>> GetDoctorSlotsByDate(int DoctorId,DateTime date)
         {
