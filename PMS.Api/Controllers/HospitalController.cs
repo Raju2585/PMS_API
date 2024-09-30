@@ -15,7 +15,7 @@ namespace PMS.Api.Controllers
         {
             _hospitalService = hospitalService;
         }
-        [Authorize(Roles = "PATIENT")]
+
         [HttpGet]
         [Route("Get/All/Hospitals")]
         public async Task<ActionResult<List<Hospital>>> GetHospitals()
@@ -31,7 +31,7 @@ namespace PMS.Api.Controllers
             }
 
         }
-        [Authorize(Roles = "PATIENT")]
+
         [HttpGet]
         [Route("Get/HospitalsByLocation")]
         public async Task<ActionResult<List<Hospital>>> GetHospitalByLocation(string location)
@@ -47,7 +47,7 @@ namespace PMS.Api.Controllers
             }
 
         }
-        [Authorize(Roles = "PATIENT")]
+
         [HttpGet]
         [Route("HospitalsByPincode")]
         public async Task<ActionResult<List<Hospital>>> GetHospitalByPincode(int pincode)
@@ -62,7 +62,7 @@ namespace PMS.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [Authorize(Roles = "PATIENT")]
+
         [HttpGet]
         [Route("get/{id}")]
         public async Task<ActionResult<Hospital>> GetHospitalById(int id)

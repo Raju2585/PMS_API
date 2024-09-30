@@ -16,7 +16,7 @@ namespace PMS.Api.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IHospitalService _hospitalService;
         public AuthController(
-            IAuthService authService, 
+            IAuthService authService,
             UserManager<ApplicationUser> userManager,
             IHospitalService hospitalService)
         {
@@ -29,13 +29,15 @@ namespace PMS.Api.Controllers
         {
             var user = new Patient
             {
-                UserName =patientReq.Email,
+                UserName = patientReq.Email,
                 Email = patientReq.Email,
-                PatientName = patientReq.FirstName+" "+patientReq.LastName,
+                PatientName = patientReq.FirstName + " " + patientReq.LastName,
                 ContactNumber = patientReq.ContactNumber,
                 Age = patientReq.Age,
                 Gender = patientReq.Gender,
-                Role= "PATIENT"
+                Role = "PATIENT",
+                Date=DateTime.Now
+                
             };
 
             var result = await _userManager.CreateAsync(user, patientReq.Password);
@@ -51,8 +53,8 @@ namespace PMS.Api.Controllers
         {
             var user = new Receptionist
             {
-                UserName =receptionistReq.Email,
-                Role="RECEPTIONIST",
+                UserName = receptionistReq.Email,
+                Role = "RECEPTIONIST",
                 Email = receptionistReq.Email,
                 ReceptionistName = receptionistReq.ReceptionistName,
                 HospitalId = receptionistReq.HospitalId
@@ -83,6 +85,7 @@ namespace PMS.Api.Controllers
                     IsSuccess = true,
                     User = new
                     {
+                        Id=user.Id,
                         Token = response.Token,
                         Role = patient.Role,
                         Email = patient.Email,
@@ -96,7 +99,7 @@ namespace PMS.Api.Controllers
             }
             else if (user is Receptionist receptionist)
             {
-                var hospital=await _hospitalService.GetHospitalById(receptionist.HospitalId);
+                var hospital = await _hospitalService.GetHospitalById(receptionist.HospitalId);
                 return Ok(new AuthResponseDto
                 {
                     IsSuccess = true,
@@ -106,7 +109,7 @@ namespace PMS.Api.Controllers
                         Role = receptionist.Role,
                         Email = receptionist.Email,
                         ReceptionistName = receptionist.ReceptionistName,
-                        HospitalName=hospital.HospitalName
+                        HospitalName = hospital.HospitalName
                     }
                 });
             }
