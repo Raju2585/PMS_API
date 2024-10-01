@@ -6,6 +6,7 @@ using PMS.Domain.Entities.DTOs;
 using System.Net.Mail;
 using System.Net;
 using PMS.Domain.Entities.Response;
+using AutoMapper;
 
 namespace PMS.Api.Controllers
 {
@@ -19,14 +20,16 @@ namespace PMS.Api.Controllers
         private readonly IDoctorService _doctorService;
         private readonly IEmailService _emailService;
         private readonly INotificationService _notificationService;
+        private readonly IMapper _mapper;
 
-        public AppointmentController(IAppointmentService appointmentService, IPatientService patientService, IDoctorService doctorService, IEmailService emailService, INotificationService notificationService)
+        public AppointmentController(IAppointmentService appointmentService, IPatientService patientService, IDoctorService doctorService, IEmailService emailService, INotificationService notificationService, IMapper mapper)
         {
             _appointmentService = appointmentService;
             _patientService = patientService;
             _doctorService = doctorService;
             _emailService = emailService;
             _notificationService = notificationService;
+            _mapper = mapper;
 
         }
         [Authorize(Roles ="PATIENT")]
@@ -172,6 +175,37 @@ namespace PMS.Api.Controllers
                     return NotFound("No appointments found for the specified hospital");
                 }
                 return Ok(appointments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        //[Authorize(Roles = "PATIENT, RECEPTIONIST")]
+        [HttpDelete]
+        [Route("Cancel/{appointmentId:int}")]
+        public async Task<IActionResult> CancelAppointment(int appointmentId)
+        {
+            try
+            {
+                
+                var updatedAppointment = await _appointmentService.UpdateAppointmentStatus(appointmentId, 0);
+
+                if (updatedAppointment == null)
+                {
+                    return NotFound("Appointment not found.");
+                }
+
+                return Ok(updatedAppointment);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound("Appointment not found.");
             }
             catch (Exception ex)
             {

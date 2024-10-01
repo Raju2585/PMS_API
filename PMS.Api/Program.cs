@@ -29,7 +29,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
-//builder.Services.AddScoped<IPatientService,PatientService>();
+builder.Services.AddScoped<IPatientService,PatientService>();
 builder.Services.AddScoped<IPatientRepository,PatientRepository>();
 builder.Services.AddScoped<IDeviceService,DeviceService>();
 builder.Services.AddScoped<IDeviceRepository,DeviceRepository>();

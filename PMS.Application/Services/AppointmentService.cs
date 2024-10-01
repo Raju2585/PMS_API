@@ -246,6 +246,25 @@ namespace PMS.Application.Services
             return _appointmentRepository.GetAppointmentsByHospital(hospitalName);
         }
 
-      
+        public async Task<Appointment> UpdateAppointmentStatus(int appointmentId, int statusId)
+        {
+           
+            if (statusId != 0 && statusId != 1)
+            {
+                throw new ArgumentException("Invalid statusId. Must be 0 (cancelled) or 1 (booked).");
+            }
+            
+            var existingAppointment = await _appointmentRepository.GetAppointment(appointmentId);
+            
+            if (existingAppointment == null)
+            {
+                throw new KeyNotFoundException("Appointment not found.");
+            }
+            
+            existingAppointment.StatusId = statusId;
+            
+            return await _appointmentRepository.UpdateAppointmentStatus(existingAppointment);
+        }
+
     }
 }
