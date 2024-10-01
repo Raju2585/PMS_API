@@ -128,7 +128,7 @@ namespace PMS.Api.Controllers
 
                     var emailBody = await _emailService.GenerateEmailBody(patient, updatedAppointment, doctor);
 
-                    _emailService.SendEmailNotification(patient.PatientEmail, "Appointment Confirmation", emailBody);
+                    _emailService.SendEmailNotification(patient.Email, "Appointment Confirmation", emailBody);
 
                     _notificationService.CreateNotificationForAppointment(updatedAppointment);
 

@@ -8,9 +8,9 @@ namespace PMS.Domain.Entities.Response
 {
     public class PatientDtl
     {
-        public int PatientId { get; set; }
+        public string Id { get; set; }
         public string PatientName { get; set; }
-        public string PatientEmail { get; set; }
+        public string Email { get; set; }
         public string ContactNumber { get; set; }
         public string DeviceName { get; set; }
         public int Age { get; set; }
