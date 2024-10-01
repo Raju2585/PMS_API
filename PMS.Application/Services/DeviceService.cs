@@ -55,7 +55,7 @@ namespace PMS.Application.Services
                 }
             }
 
-            var result = await CreateDevice(deviceReq.PatientId, deviceReq.Email, deviceReq.Password);
+            var result = await CreateDevice(deviceReq.Id, deviceReq.Email, deviceReq.Password);
             deviceRes.Device = result;
             deviceRes.IsSuccess=true ;
             return deviceRes;

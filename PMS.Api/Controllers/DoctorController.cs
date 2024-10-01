@@ -19,7 +19,7 @@ namespace PMS.Api.Controllers
         {
             _doctorService = doctorService;
         }
-        [Authorize(Roles = "PATIENT")]
+
         [HttpGet]
         [Route("Get/All/Doctors")]
         public async Task<ActionResult<List<Doctor>>> GetAllDoctors()
@@ -34,7 +34,7 @@ namespace PMS.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [Authorize(Roles = "PATIENT")]
+
         [HttpGet]
         [Route("Get/DoctorById/{id}")]
         public async Task<ActionResult<Doctor>> GetDoctorDTOAsync(int id)
@@ -51,7 +51,7 @@ namespace PMS.Api.Controllers
             }
 
         }
-        [Authorize(Roles = "PATIENT")]
+
         [HttpGet]
         [Route("Get/Doctor/{specailist}")]
         public async Task<ActionResult<Doctor>> GetDoctorBySpecialist(string specailist)
@@ -66,7 +66,7 @@ namespace PMS.Api.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [Authorize(Roles = "PATIENT")]
+
         [HttpGet]
         [Route("Get/Doctor/HospitalId/{hospitalId}")]
         public async Task<ActionResult<Doctor>> GetDoctorsByHospitals(int hospitalId)
@@ -97,7 +97,7 @@ namespace PMS.Api.Controllers
             }
 
         }
-        [Authorize(Roles = "PATIENT")]
+
         [HttpGet("GetDoctorSlotsByDate")]
         public async Task<ActionResult<Doctor_Slots>> GetDoctorSlotsByDate(int DoctorId,DateTime date)
         {
