@@ -221,9 +221,9 @@ namespace PMS.Application.Services
         public async Task<Appointment> UpdateAppointmentStatus(Appointment appointment)
         {
         
-            if (appointment.StatusId!= 0 && appointment.StatusId != 1)
+            if (!(appointment.StatusId>=-1) && !(appointment.StatusId <= 2))
             {
-                throw new ArgumentException("Invalid statusId. Must be 0 (cancelled) or 1 (booked).");
+                throw new ArgumentException("Invalid statusId. Must be 0 (cancelled) or 1 (booked) or 2(Confirmed).");
             }
 
             var existingAppointment = await _appointmentRepository.GetAppointment(appointment.AppointmentId);
@@ -241,9 +241,9 @@ namespace PMS.Application.Services
             return await _appointmentRepository.UpdateAppointmentStatus(existingAppointment);
         }
 
-        public Task<List<AppointmentDto>> GetAppointmentsByHospital(string hospitalName)
+        public Task<List<AppointmentDto>> GetAppointmentsByHospital(string hospitalName,int statusId)
         {
-            return _appointmentRepository.GetAppointmentsByHospital(hospitalName);
+            return _appointmentRepository.GetAppointmentsByHospital(hospitalName, statusId);
         }
 
         public async Task<Appointment> UpdateAppointmentStatus(int appointmentId, int statusId)

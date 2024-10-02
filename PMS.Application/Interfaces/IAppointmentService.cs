@@ -12,7 +12,7 @@ namespace PMS.Application.Interfaces
         Task<List<AppointmentDto>> GetAppointmentsByPatientId(string patientId);
         Task<List<AppointmentDto>> GetAppointmentsByDoctorId(int doctorId);
         Task<Appointment> UpdateAppointmentStatus(Appointment appointment);
-        Task<List<AppointmentDto>> GetAppointmentsByHospital(string hospital);
+        Task<List<AppointmentDto>> GetAppointmentsByHospital(string hospital, int statusId);
         Task<Appointment> UpdateAppointmentStatus(int appointmentId, int statusId);
     }
 }
