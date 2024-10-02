@@ -22,7 +22,7 @@ namespace PMS.Api.Controllers
         [HttpPost("AddDevice")]
         public async Task<ActionResult> AddDevice(DeviceReq deviceReq)
         {
-                var deviceRes=new DeviceRes();
+            var deviceRes=new DeviceRes();
             if (deviceReq != null)
             {
                 var device=await _deviceService.AddDevice(deviceReq);
