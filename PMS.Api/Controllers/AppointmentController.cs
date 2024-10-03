@@ -95,20 +95,15 @@ namespace PMS.Api.Controllers
         [Authorize(Roles = "PATIENT,RECEPTIONIST")]
         [HttpPut]
         [Route("UpdateStatus/{appointmentId:int}")]
-        public async Task<IActionResult> UpdateAppointmentStatus(int appointmentId, [FromQuery] int status)
+        public async Task<IActionResult> UpdateAppointmentStatus(int appointmentId, [FromQuery] int statusId)
         {
-
-            if (status != 0 && status != 1)
-            {
-                return BadRequest("Invalid statusId. Must be 0 (cancelled) or 1 (booked).");
-            }
 
             try
             {
                 var appointment = new Appointment
                 {
                     AppointmentId = appointmentId,
-                    StatusId = 1
+                    StatusId = statusId
                 };
 
 
@@ -119,7 +114,7 @@ namespace PMS.Api.Controllers
                 {
                     return NotFound("Appointment not found.");
                 }
-                if (status == 1)
+                if (statusId == 1)
                 {
                     var doctor = await _doctorService.GetDoctorByID(updatedAppointment.DoctorId);
                     var patient = await _patientService.GetPatientById(updatedAppointment.Id);
@@ -129,9 +124,9 @@ namespace PMS.Api.Controllers
                         return NotFound("Doctor or Patient not found.");
                     }
 
-                    var emailBody = await _emailService.GenerateEmailBody(patient, updatedAppointment, doctor);
+                    //var emailBody = await _emailService.GenerateEmailBody(patient, updatedAppointment, doctor);
 
-                    _emailService.SendEmailNotification(patient.Email, "Appointment Confirmation", emailBody);
+                    //_emailService.SendEmailNotification(patient.PatientEmail, "Appointment Confirmation", emailBody);
 
                     _notificationService.CreateNotificationForAppointment(updatedAppointment);
 
@@ -140,7 +135,7 @@ namespace PMS.Api.Controllers
 
 
 
-                return Ok(updatedAppointment);
+                return Ok("Status successfully updated");
             }
             catch (ArgumentException ex)
             {
@@ -159,8 +154,8 @@ namespace PMS.Api.Controllers
             }
         }
         [Authorize(Roles = "RECEPTIONIST")]
-        [HttpGet("GetHospitalName/{hospitalName}")]
-        public async Task<IActionResult> GetAppointmentsByHospital(string hospitalName)
+        [HttpGet("GetHospitalName/{hospitalName}/{statusId}")]
+        public async Task<IActionResult> GetAppointmentsByHospital(string hospitalName,int statusId)
         {
             if (string.IsNullOrWhiteSpace(hospitalName))
             {
@@ -169,7 +164,7 @@ namespace PMS.Api.Controllers
 
             try
             {
-                var appointments = await _appointmentService.GetAppointmentsByHospital(hospitalName);
+                var appointments = await _appointmentService.GetAppointmentsByHospital(hospitalName, statusId);
                 if (appointments == null || appointments.Count == 0)
                 {
                     return NotFound("No appointments found for the specified hospital");

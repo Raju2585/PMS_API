@@ -105,6 +105,7 @@ namespace PMS.Api.Controllers
                     IsSuccess = true,
                     User = new
                     {
+                        HospitalId = hospital.HospitalId,
                         Token = response.Token,
                         Role = receptionist.Role,
                         Email = receptionist.Email,
