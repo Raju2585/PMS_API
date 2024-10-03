@@ -84,7 +84,7 @@ namespace PMS.Api.Controllers
 
         [HttpPost]
         [Route("Add/Doctors")]
-        public async Task<ActionResult<Doctor>> AddDoctors([FromForm] string Doctorname, string email, string specialization, string contact, decimal consultationFee, bool isAvailable, int hospitalId, IFormFile? file) 
+        public async Task<ActionResult<Doctor>> AddDoctors([FromForm] string Doctorname, [FromForm] string email, [FromForm] string specialization, [FromForm] string contact, [FromForm] decimal consultationFee, [FromForm] bool isAvailable, [FromForm] int hospitalId, IFormFile? file) 
         {
             try
             {
