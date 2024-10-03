@@ -12,6 +12,9 @@ namespace PMS.Application.Interfaces
     public interface IPatientService
     {
         Task<PatientDtl> GetPatientById(string patientId);
+        Task<PatientDtl> GetPatientByEmail(string email);
+        Task<string> GenerateToken(string email);
+        Task<bool> UpdatePatientPassword(string patientEmail, string newPassword);
 
     }
 }
