@@ -11,5 +11,7 @@ namespace PMS.Application.Repository_Interfaces
     public interface IPatientRepository
     {
         Task<PatientDtl> GetPatientById(string patientId);
+        Task<Patient> GetPatientEmail(string email);
+        Task<bool> UpdatePatientPassword(string patientEmail, string newPassword);
     }
 }

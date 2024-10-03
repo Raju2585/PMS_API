@@ -16,11 +16,13 @@ namespace PMS.Domain.Entities.Response
         public int Age { get; set; }
         public string Gender { get; set; }
         public DateTime Date { get; set; }
+        public string NewPassword { get; set; }
 
         // Navigation properties
         public virtual ICollection<Appointment> Appointments { get; set; } = new HashSet<Appointment>();
         public virtual ICollection<Consultation> Consultations { get; set; } = new HashSet<Consultation>();
         public virtual ICollection<MedicalHistory> MedicalHistories { get; set; } = new HashSet<MedicalHistory>();
         public virtual Device Device { get; set; }
+        public string PasswordHash { get; set; }
     }
 }

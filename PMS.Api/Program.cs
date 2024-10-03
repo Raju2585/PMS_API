@@ -38,6 +38,8 @@ builder.Services.AddScoped<IDeviceRepository,DeviceRepository>();
 builder.Services.AddScoped<IVitalSignService,VitalSignService>();
 builder.Services.AddScoped<IVitalSignRepository,VitalSignRepository>();
 builder.Services.AddScoped<IMedicalhistoryService,MedicalHistoryService>();
+builder.Services.AddScoped<IForgetPasswordService, ForgetPasswordService>();
+builder.Services.AddScoped<InMemoryTokenStore>();
 builder.Services.AddScoped<IMedicalHistoryRepository,MedicalHistoryRepository>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
