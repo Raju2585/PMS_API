@@ -265,6 +265,19 @@ namespace PMS.Application.Services
             
             return await _appointmentRepository.UpdateAppointmentStatus(existingAppointment);
         }
+        public async Task<List<AppointmentDto>> GetAppointmentsByHospital(string hospitalName)
+        {
+            List<AppointmentDto> appointmentsList=new List<AppointmentDto>();
+            try
+            {
+                appointmentsList = await _appointmentRepository.GetAppointmentsByHospital(hospitalName);
+            }
+            catch(Exception ex)
+            {
+                return appointmentsList;
+            }
+            return appointmentsList;
+        }
 
     }
 }

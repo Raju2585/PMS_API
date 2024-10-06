@@ -128,7 +128,7 @@ namespace PMS.Api.Controllers
 
                     //_emailService.SendEmailNotification(patient.PatientEmail, "Appointment Confirmation", emailBody);
 
-                    _notificationService.CreateNotificationForAppointment(updatedAppointment);
+                    await _notificationService.CreateNotificationForAppointment(updatedAppointment);
 
                 }
 
@@ -177,7 +177,7 @@ namespace PMS.Api.Controllers
             }
         }
 
-        //[Authorize(Roles = "PATIENT, RECEPTIONIST")]
+        [Authorize(Roles = "PATIENT, RECEPTIONIST")]
         [HttpDelete]
         [Route("Cancel/{appointmentId:int}")]
         public async Task<IActionResult> CancelAppointment(int appointmentId)
@@ -207,6 +207,22 @@ namespace PMS.Api.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [Authorize(Roles = "RECEPTIONIST")]
+        [HttpGet("GetAllAppointments/{hospitalName}")]
+        public async Task<IActionResult> GetAppointmentsByHospital(string hospitalName)
+        {
+            try
+            {
+                var appointmentList=await _appointmentService.GetAppointmentsByHospital(hospitalName);
+                return Ok(appointmentList);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
     }
 }

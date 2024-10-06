@@ -9,6 +9,7 @@ namespace PMS.Domain.Entities
     public class AppointmentDto
     {
         public int AppointmentId { get; set; }
+        public string UserName { get; set; }
         public string Id { get; set; }
         public int DoctorId { get; set; }
         public string PatientName { get; set; }
