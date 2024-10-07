@@ -110,6 +110,31 @@ namespace PMS.Infra
                 })
                 .ToListAsync();
         }
+        public async Task<List<AppointmentDto>> GetAppointmentsByHospital(string hospitalName)
+        {
+            var appointmentsList = await _applicationContext.Appointments
+                .Where(r => r.HospitalName == hospitalName)
+                .Include(a => a.Doctor)
+                .Include(a=>a.Patient)
+                .Select(a => new AppointmentDto
+                {
+                    AppointmentId = a.AppointmentId,
+                    Id = a.Id,
+                    UserName=a.Patient.PatientName,
+                    DoctorId = a.DoctorId,
+                    PatientName = a.Patientname,
+                    AppointmentDate = a.AppointmentDate,
+                    StatusId = a.StatusId,
+                    HospitalName = a.HospitalName,
+                    Reason = a.Reason,
+                    CreatedAt = a.CreatedAt,
+                    Gender = a.Gender,
+                    Email = a.Email,
+                    DoctorName = a.Doctor.DoctorName
+                })
+                .ToListAsync();
+            return appointmentsList;
+        }
 
     }
 }
