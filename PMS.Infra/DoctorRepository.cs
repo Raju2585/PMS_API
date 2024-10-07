@@ -46,5 +46,6 @@ namespace PMS.Infra
             var doctorsByHospital = await _context.Doctors.Where(s => s.HospitalId == hospitalId && s.IsAvailable == true).ToListAsync();
             return doctorsByHospital;
         }
+
     }
 }

@@ -21,6 +21,6 @@ namespace PMS.Application.Interfaces
         Task<Doctor_Slots> GetDoctorSlotsByDate(int DoctorId,DateOnly date);
 
         Task<Doctor> AddDoctors(string Doctorname, string email, string specialization, string contact, decimal consultationFee, bool isAvailable, int hospitalId, IFormFile? file);
-
+        Task<int> ReleaseDoctorSlot(int DoctorId, DateTime date);
     }
 }

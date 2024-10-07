@@ -154,6 +154,62 @@ namespace PMS.Application.Services
             return existedSlots;
         }
 
+        public async Task<int> ReleaseDoctorSlot(int DoctorId, DateTime slotDate)
+        {
+            var date=DateOnly.FromDateTime(slotDate); 
+            var time =slotDate.TimeOfDay;
+            var existedSlots = await _doctorSlotsRepository.GetDoctorSlotsByDate(DoctorId, date);
+            if (existedSlots != null)
+            {
+                switch (time)
+                {
+                    case var t when t == new TimeSpan(10, 00, 00):
+                        if (existedSlots.Slot_1)
+                        {
+                            existedSlots.Slot_1 = false;
+                        }
+                        break;
+
+                    case var t when t == new TimeSpan(11, 00, 00):
+                        if (existedSlots.Slot_2)
+                        {
+                            existedSlots.Slot_2 = false;
+                        }
+                        break;
+
+                    case var t when t == new TimeSpan(14, 00, 00):
+                        if (existedSlots.Slot_3)
+                        {
+                            existedSlots.Slot_3 = false;
+                        }
+                        break;
+
+                    case var t when t == new TimeSpan(15, 00, 00):
+                        if (existedSlots.Slot_4)
+                        {
+                            existedSlots.Slot_4 = false;
+                        }
+                        break;
+
+                    case var t when t == new TimeSpan(16, 00, 00):
+                        if (existedSlots.Slot_5)
+                        {
+                            existedSlots.Slot_5 = false;
+                        }
+                        break;
+
+                    default:
+                        return 0;
+
+                }
+            }
+            else
+            {
+                return 0;
+            }
+            return await _doctorSlotsRepository.UpdateDoctorSlots(existedSlots);
+        }
+
 
     }
 }

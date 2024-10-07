@@ -1,1 +1,3 @@
 /.vs
+/PMS.Domain/PMS.Domain.csproj
+/.gitignore

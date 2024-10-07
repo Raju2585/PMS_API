@@ -124,9 +124,9 @@ namespace PMS.Api.Controllers
                         return NotFound("Doctor or Patient not found.");
                     }
 
-                    //var emailBody = await _emailService.GenerateEmailBody(patient, updatedAppointment, doctor);
+                    var emailBody = await _emailService.GenerateEmailBody(patient, updatedAppointment, doctor);
 
-                    //_emailService.SendEmailNotification(patient.PatientEmail, "Appointment Confirmation", emailBody);
+                    _emailService.SendEmailNotification(patient.Email, "Appointment Confirmation", emailBody);
 
                     await _notificationService.CreateNotificationForAppointment(updatedAppointment);
 
@@ -183,10 +183,9 @@ namespace PMS.Api.Controllers
         public async Task<IActionResult> CancelAppointment(int appointmentId)
         {
             try
-            {
-                
+            {                
                 var updatedAppointment = await _appointmentService.UpdateAppointmentStatus(appointmentId, 0);
-
+                await _doctorService.ReleaseDoctorSlot(updatedAppointment.DoctorId, updatedAppointment.AppointmentDate);
                 if (updatedAppointment == null)
                 {
                     return NotFound("Appointment not found.");
