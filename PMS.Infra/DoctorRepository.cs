@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PMS.Application.Repository_Interfaces;
 using PMS.Domain.Entities;
+using PMS.Domain.NewFolder;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,25 @@ namespace PMS.Infra
             _context = context;
         }
 
-        public async Task<List<Doctor>> GetAllDoctors()
+        public async Task<List<DoctorDTO>> GetAllDoctors()
         {
-            return await _context.Doctors.ToListAsync();
+            return await _context.Doctors
+                .Select(doctor => new DoctorDTO
+                {
+                    
+                    DoctorId=doctor.DoctorId,
+                    DoctorEmail=doctor.DoctorEmail,
+                    HospitalId=doctor.HospitalId,
+                    DoctorName = doctor.DoctorName,
+                    Specialization = doctor.Specialization,
+                    ConsultationFee = doctor.ConsultationFee,
+                    Image = doctor.Image,
+                    HospitalName = doctor.Hospital.HospitalName,
+                    City = doctor.Hospital.City,
+                    ContactNumber=doctor.ContactNumber,
+                    // Map other properties as needed
+                })
+                .ToListAsync();
         }
 
         public async Task<Doctor> GetDoctorById(int id)

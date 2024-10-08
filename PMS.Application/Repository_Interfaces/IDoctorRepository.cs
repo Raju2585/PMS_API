@@ -10,7 +10,7 @@ namespace PMS.Application.Repository_Interfaces
 {
     public interface IDoctorRepository
     {
-        Task<List<Doctor>> GetAllDoctors();
+        Task<List<DoctorDTO>> GetAllDoctors();
 
         Task<Doctor> GetDoctorById(int id);
 

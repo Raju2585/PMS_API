@@ -30,7 +30,7 @@ namespace PMS.Application.Services
             _doctorRepository = doctorRepository;
             _doctorSlotsRepository = doctorSlotsRepository;
         }
-        public async Task<List<Doctor>> GetAllDoctorsDTO()
+        public async Task<List<DoctorDTO>> GetAllDoctorsDTO()
         {
             try
             {
@@ -38,7 +38,7 @@ namespace PMS.Application.Services
 
                 if (doctors == null || !doctors.Any())
                 {
-                    return new List<Doctor>();
+                    return new List<DoctorDTO>();
                 }
 
                 return doctors;

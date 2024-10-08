@@ -11,7 +11,7 @@ namespace PMS.Application.Interfaces
 {
     public interface IDoctorService
     {
-        Task<List<Doctor>> GetAllDoctorsDTO();
+        Task<List<DoctorDTO>> GetAllDoctorsDTO();
 
         Task<Doctor> GetDoctorByID(int doctorId);
 
