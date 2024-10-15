@@ -1,80 +1,86 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 using PMS.Application.Interfaces;
+using PMS.Domain.Entities;
+using System;
+using System.Threading.Tasks;
 
 namespace PMS.Application.Services
 {
     public class ForgetPasswordService : IForgetPasswordService
     {
-        private IEmailService _emailService;
-
+        private readonly IEmailService _emailService;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IPatientService _patientService;
         private readonly InMemoryTokenStore _inMemoryTokenStore;
-        public ForgetPasswordService(IEmailService emailService, IPatientService patientService, InMemoryTokenStore inMemoryTokenStore)
+        private readonly IPasswordHasher<ApplicationUser> _passwordHasher; // Use PasswordHasher
+
+        public ForgetPasswordService(IEmailService emailService, IPatientService patientService,
+                                     InMemoryTokenStore inMemoryTokenStore,
+                                     IPasswordHasher<ApplicationUser> passwordHasher,
+                                      UserManager<ApplicationUser> userManager) // Inject PasswordHasher
         {
             _emailService = emailService;
             _patientService = patientService;
             _inMemoryTokenStore = inMemoryTokenStore;
+            _passwordHasher = passwordHasher;
+            _userManager = userManager;
         }
+
         public async Task<bool> SendResetLinkAsync(string email)
         {
             var patient = await _patientService.GetPatientByEmail(email);
-
             var token = await _patientService.GenerateToken(email);
 
             _inMemoryTokenStore.StoreToken(email, token, TimeSpan.FromHours(1));
 
             var resetLink = $"http://localhost:3000/root/PasswordReset?token={token}&email={email}";
 
-            var message = $"<p>To reset your password,click the link below:</p><p><a href='{resetLink}'>Reset Password</a></p>";
+            var message = $"<p>To reset your password, click the link below:</p><p><a href='{resetLink}'>Reset Password</a></p>";
             _emailService.SendEmailNotification(email, resetLink, message);
             return true;
         }
-        public async Task<bool> ResetPasswordAsync(string email, string token, string password)
+
+        public async Task<bool> ResetPasswordAsync(string email, string token, string newPassword)
         {
-            // Validate the token first
+            // Validate the token
             var isValidToken = await ValidateTokenAsync(email, token);
             if (!isValidToken)
             {
-                Console.WriteLine($"Invalid token for email: {email}");
-                return false; // Token is invalid
+                Console.WriteLine("Invalid or expired token.");
+                return false;
             }
 
             // Retrieve the user by email
-            var userDtl = await _patientService.GetPatientByEmail(email);
+            //var userDtl = await _patientService.GetPatientByEmail(email);
+            var userDtl = await _userManager.FindByEmailAsync(email);
             if (userDtl == null)
             {
-                Console.WriteLine($"User not found for email: {email}");
-                return false; // User not found
+                Console.WriteLine("User not found.");
+                return false;
             }
+            await _userManager.RemovePasswordAsync(userDtl);
+            var result = await _userManager.AddPasswordAsync(userDtl, newPassword);
 
-            // Hash the new password before saving
-            userDtl.PasswordHash = password; // Ensure the password is hashed
+            // Map Patient (or custom model) to ApplicationUser
+            //var applicationUser = new ApplicationUser
+            //{
+            //    Id = userDtl.Id,         // Map necessary properties
+            //    Email = userDtl.Email,
+            //    PasswordHash = userDtl.PasswordHash
+            //};
 
-            // Update the user's password
-            var isUpdated = await _patientService.UpdatePatientPassword(email, password); // Pass the hashed password
-            if (!isUpdated)
-            {
-                Console.WriteLine($"Failed to update password for user: {email}");
-                return false; // Update failed
-            }
-
+            // Hash the new password using PasswordHasher
+           
             // Invalidate the token after a successful password update
             _inMemoryTokenStore.InvalidateToken(email);
 
-            // Successful reset
-            return true;
+            return true; // Successful password reset
         }
 
-
-
-        public async Task<bool> ValidateTokenAsync(string email,string token)
+        public async Task<bool> ValidateTokenAsync(string email, string token)
         {
             var storedTokenInfo = _inMemoryTokenStore.GetToken(email);
-            if(storedTokenInfo == null)
+            if (storedTokenInfo == null)
             {
                 return false;
             }

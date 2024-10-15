@@ -60,7 +60,8 @@ namespace PMS.Infra
                     HospitalName = a.HospitalName,
                     Reason = a.Reason,
                     CreatedAt = a.CreatedAt,
-                    DoctorName = a.Doctor.DoctorName
+                    DoctorName = a.Doctor.DoctorName,
+                    PatientName=a.Patientname
                 })
                 .ToListAsync();
         }

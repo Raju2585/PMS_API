@@ -15,8 +15,8 @@ namespace PMS.Api.Controllers
         {
             _forgetPasswordService = forgetPasswordService;
         }
-        [HttpPost("forget")]
-        public async Task<IActionResult> SendResetLink([FromBody] string email)
+        [HttpPost("forget/{email}")]
+        public async Task<IActionResult> SendResetLink(string email)
         {
             if (string.IsNullOrEmpty(email))
             {

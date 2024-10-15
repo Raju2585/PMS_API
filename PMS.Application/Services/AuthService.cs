@@ -8,7 +8,7 @@ using PMS.Application.Interfaces;
 using PMS.Domain.Entities.DTOs; // Adjust this based on your namespaces
 using Microsoft.Extensions.Configuration;
 using System.IdentityModel.Tokens.Jwt;
-public class AuthService: IAuthService
+public class AuthService : IAuthService
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IConfiguration _configuration;
