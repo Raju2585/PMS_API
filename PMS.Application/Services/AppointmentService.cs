@@ -140,7 +140,11 @@ namespace PMS.Application.Services
             }
 
             var appointment = _mapper.Map<Appointment>(appointmentDto);
-
+            var currDate= DateOnly.FromDateTime(DateTime.UtcNow);
+            if(DateOnly.FromDateTime(appointment.AppointmentDate)== currDate)
+            {
+                appointment.StatusId = 1;
+            }
             var scheduledAppointment = await _appointmentRepository.ScheduleAppointment(appointment);
             var scheduledAppointmentDto = _mapper.Map<AppointmentDto>(scheduledAppointment);
 

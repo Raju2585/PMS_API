@@ -58,7 +58,7 @@ namespace PMS.Application.Services
                 }
                 return _mapper.Map<PatientDtl>(patient);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine($"Error fetching patient by email: {ex.Message}");
                 return null;
@@ -73,8 +73,8 @@ namespace PMS.Application.Services
 
             var claims = new[]
             {
-        new Claim(ClaimTypes.Email, email)
-    };
+                new Claim(ClaimTypes.Email, email)
+            };
 
             var token = new JwtSecurityToken
             (
@@ -92,7 +92,7 @@ namespace PMS.Application.Services
         {
             try
             {
-                return await _repository.UpdatePatientPassword(patientEmail,newPassword);
+                return await _repository.UpdatePatientPassword(patientEmail, newPassword);
             }
             catch
             {

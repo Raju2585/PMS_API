@@ -1,13 +1,12 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using System.Threading.Tasks;
-using PMS.Domain.Entities;
-using PMS.Application.Interfaces;
-using PMS.Domain.Entities.DTOs; // Adjust this based on your namespaces
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using PMS.Application.Interfaces;
+using PMS.Domain.Entities;
+using PMS.Domain.Entities.DTOs; 
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 public class AuthService : IAuthService
 {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -27,8 +26,8 @@ public class AuthService : IAuthService
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Role) // Assuming Role property exists on ApplicationUser
+                new Claim(ClaimTypes.Email, user.Email ?? ""),
+                new Claim(ClaimTypes.Role, user.Role)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
@@ -39,7 +38,7 @@ public class AuthService : IAuthService
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: creds);
+                signingCredentials: creds); 
 
             return new AuthResponseDto
             {
@@ -47,7 +46,7 @@ public class AuthService : IAuthService
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 User = new
                 {
-                    Role = user.Role // Make sure this property exists on your user class
+                    Role = user.Role
                 }
             };
         }
